@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILVisualizer.Bot", "src\ILVisualizer.Bot\ILVisualizer.Bot.csproj", "{14A24A98-C395-42C0-9F76-2F3970857415}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILVisualizer.Application", "src\ILVisualizer.Application\ILVisualizer.Application.csproj", "{63F55AF7-43F4-4B0F-8138-C01ECB11C01A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILVisualizer.Application", "src\ILVisualizer.Application\ILVisualizer.Application.csproj", "{63F55AF7-43F4-4B0F-8138-C01ECB11C01A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILVisualizer.Domain", "src\ILVisualizer.Domain\ILVisualizer.Domain.csproj", "{C81D0F4F-0EAC-42CA-BE31-CA3DD604F61C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILVisualizer.Domain", "src\ILVisualizer.Domain\ILVisualizer.Domain.csproj", "{C81D0F4F-0EAC-42CA-BE31-CA3DD604F61C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8C7E59D8-4056-429B-919A-0C3F5FD9D821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILVisualizer.UnitTests", "tests\ILVisualizer.UnitTests\ILVisualizer.UnitTests.csproj", "{EDD36AB1-9346-47DB-99B4-08EE917B951C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILVisualizer.UnitTests", "tests\ILVisualizer.UnitTests\ILVisualizer.UnitTests.csproj", "{EDD36AB1-9346-47DB-99B4-08EE917B951C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
