@@ -22,6 +22,11 @@ namespace ILVisualizer.Bot
 		{
 			await _discord.InitializeAsync();
 			await _discord.ConnectAsync();
+		public async Task StopAsync(CancellationToken cancellationToken)
+		{
+			await _discord.DisconnectAsync();
+			_discord.Dispose();
+		}
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
