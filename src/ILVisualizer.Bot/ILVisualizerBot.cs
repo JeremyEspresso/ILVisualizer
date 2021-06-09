@@ -48,7 +48,6 @@ namespace ILVisualizer.Bot
 
 			var commandsNext = _discord.GetCommandsNext();
 			commandsNext.RegisterCommands(typeof(ILVisualizerBot).Assembly);
-			Console.WriteLine($"{commandsNext.RegisteredCommands.Count} commands registered");
 		}
 
 		private void RegisterCommandHandler()
