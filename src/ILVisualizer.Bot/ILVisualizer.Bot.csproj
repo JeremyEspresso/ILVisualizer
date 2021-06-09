@@ -9,4 +9,8 @@
     <ProjectReference Include="..\ILVisualizer.Application\ILVisualizer.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\" />
+  </ItemGroup>
+
 </Project>
