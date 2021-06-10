@@ -22,25 +22,25 @@ namespace ILVisualizer.Bot.DependencyInjection
 				context.HostingEnvironment.EnvironmentName = applicationConfig.EnvironmentConfig.EnvironmentName;
 			});
 
-			builder.ConfigureServices((context, services) =>
+			builder.ConfigureServices((_, services) =>
 			{
-				_ = services.AddSingleton(new DiscordClient(new DiscordConfiguration
+				services.AddSingleton(new DiscordClient(new DiscordConfiguration
 				{
 					Token = applicationConfig.DiscordConfig.Token,
 					TokenType = TokenType.Bot,
 					Intents = DiscordIntents.GuildMessages | DiscordIntents.Guilds,
 				}));
 
-				_ = services.AddSingleton(applicationConfig);
-				_ = services.AddApplication();
+				services.AddSingleton(applicationConfig);
+				services.AddApplication();
 
-				_ = services.Configure<HostOptions>(x => x.ShutdownTimeout = TimeSpan.Zero);
-				_ = services.AddCommands()
+				services.Configure<HostOptions>(x => x.ShutdownTimeout = TimeSpan.Zero);
+				services.AddCommands()
 					.AddPositionalCommandParser()
 					.AddAttributedCommands(x
 						=> x.Assemblies.Add(typeof(Startup).Assembly.Location));
 
-				_ = services.AddHostedService<ILVisualizerBot>();
+				services.AddHostedService<ILVisualizerBot>();
 			});
 
 			
