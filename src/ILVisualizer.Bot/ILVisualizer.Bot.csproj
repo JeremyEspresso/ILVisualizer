@@ -3,10 +3,21 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ILVisualizer.Application\ILVisualizer.Application.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Finite.Commands.Core" Version="0.3.1-alpha.860570300" />
+		<PackageReference Include="Finite.Commands.Models.AttributedModel" Version="0.3.1-alpha.860570300" />
+		<PackageReference Include="Finite.Commands.Parsing.Positional" Version="0.3.1-alpha.860570300" />
+	</ItemGroup>
 
 </Project>
