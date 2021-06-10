@@ -6,14 +6,10 @@ namespace ILVisualizer.Bot
 {
 	public class Startup
 	{
-		static async Task Main()
-		{
-			IHost host = Host.CreateDefaultBuilder()
+		static void Main()
+			=> Host.CreateDefaultBuilder()
 				.ConfigureHost()
-				.UseConsoleLifetime()
-				.Build();
-
-			await host.RunAsync().ConfigureAwait(false);
-		}
+				.Build()
+				.Run();
 	}
 }

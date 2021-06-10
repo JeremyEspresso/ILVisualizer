@@ -1,4 +1,7 @@
-﻿using DSharpPlus;
+﻿using System;
+using DSharpPlus;
+using Finite.Commands;
+using Finite.Commands.Parsing;
 using ILVisualizer.Application.Common;
 using ILVisualizer.Application.Common.Interfaces;
 using ILVisualizer.Application.DependencyInjection;
@@ -28,9 +31,15 @@ namespace ILVisualizer.Bot.DependencyInjection
 					Intents = DiscordIntents.GuildMessages | DiscordIntents.Guilds,
 				}));
 
-				
 				services.AddSingleton(applicationConfig);
 				services.AddApplication();
+
+				services.Configure<HostOptions>(x => x.ShutdownTimeout = TimeSpan.Zero);
+				services.AddCommands()
+					.AddPositionalCommandParser()
+					.AddAttributedCommands(x
+						=> x.Assemblies.Add(typeof(Startup).Assembly.Location));
+
 				services.AddHostedService<ILVisualizerBot>();
 			});
 
