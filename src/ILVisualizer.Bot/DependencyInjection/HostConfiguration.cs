@@ -28,11 +28,13 @@ namespace ILVisualizer.Bot.DependencyInjection
 					Intents = DiscordIntents.GuildMessages | DiscordIntents.Guilds,
 				}));
 
+				
 				services.AddSingleton(applicationConfig);
-				services.AddHostedService<ILVisualizerBot>();
 				services.AddApplication();
+				services.AddHostedService<ILVisualizerBot>();
 			});
 
+			
 			return builder;
 		}
 	}
