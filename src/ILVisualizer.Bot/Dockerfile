@@ -4,6 +4,7 @@ FROM mcr.microsoft.com/dotnet/runtime:5.0 AS base
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+COPY ["nuget.config", "nuget.config"]
 WORKDIR /src
 COPY ["src/ILVisualizer.Bot/ILVisualizer.Bot.csproj", "src/ILVisualizer.Bot/"]
 COPY ["src/ILVisualizer.Application/ILVisualizer.Application.csproj", "src/ILVisualizer.Application/"]
