@@ -22,10 +22,10 @@ namespace ILVisualizer.Bot
 		private readonly IConfig _config;
 		private readonly ILogger<ILVisualizerBot> _logger;
 		private readonly IServiceProvider _serviceProvider;
-		private ICommandContextFactory _commandContextFactory;
-		private ICommandExecutor _commandExecutor;
-		private ICommandParser _commandParser;
-		private ICommandStore _commandStore;
+		private ICommandContextFactory _commandContextFactory = null!;
+		private ICommandExecutor _commandExecutor = null!;
+		private ICommandParser _commandParser = null!;
+		private ICommandStore _commandStore = null!;
 
 		public ILVisualizerBot(
 			DiscordClient discordClient,
@@ -71,7 +71,7 @@ namespace ILVisualizer.Bot
 			{
 				_commandParser.Parse(context, e.Message.Content);
 			}
-			catch (Exception ex)
+			catch
 			{
 				// If it's not a valid command we really don't care :P
 				return;
