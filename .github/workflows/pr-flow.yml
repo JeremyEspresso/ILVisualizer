@@ -1,4 +1,4 @@
-name: Build & Test Pull Request
+name: Build & Test
 
 on: 
   push:
@@ -25,7 +25,7 @@ jobs:
         run: dotnet restore
 
       - name: Build ILVisualizer
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build --no-restore --configuration Release /p:TreatWarningsAsErrors=true /warnaserror
       
       - name: Run Tests .NET 5.0
         run: dotnet test --no-build --configuration  Release
