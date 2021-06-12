@@ -12,6 +12,7 @@ using ILVisualizer.Application.Common.Entities;
 using ILVisualizer.Application.Common.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace ILVisualizer.Bot
 {
@@ -19,6 +20,7 @@ namespace ILVisualizer.Bot
 	{
 		private readonly DiscordClient _discord;
 		private readonly IConfig _config;
+		private readonly ILogger<ILVisualizerBot> _logger;
 		private readonly IServiceProvider _serviceProvider;
 		private ICommandContextFactory _commandContextFactory;
 		private ICommandExecutor _commandExecutor;
@@ -28,15 +30,18 @@ namespace ILVisualizer.Bot
 		public ILVisualizerBot(
 			DiscordClient discordClient,
 			IConfig config,
+			ILogger<ILVisualizerBot> logger,
 			IServiceProvider serviceProvider)
 		{
 			_discord = discordClient;
 			_config = config;
+			_logger = logger;
 			_serviceProvider = serviceProvider;
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
+			_logger.LogInformation("Bot started - {StartupTime}", DateTime.Now);
 			using IServiceScope scope = _serviceProvider.CreateScope();
 
 			_commandContextFactory = scope.ServiceProvider.GetRequiredService<ICommandContextFactory>();
@@ -48,6 +53,7 @@ namespace ILVisualizer.Bot
 
 			await _discord.InitializeAsync();
 			await _discord.ConnectAsync();
+			_logger.LogInformation("Discord initialized");
 		}
 
 		private void SubscribeEvents()
