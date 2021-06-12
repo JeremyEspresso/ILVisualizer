@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ILVisualizer.Application.Common.Exceptions.Parser;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -38,12 +39,30 @@ namespace ILVisualizer.Application.Common.Entities.Parser
             int oneBefore = _currentLineEnd - 1;
             if (_source[oneBefore] == '\r') _currentLineEnd = oneBefore;
 
+            _currentLineEnd--;
             return isLastLine;
+        }
+
+        public string ReadToLineEnd()
+        {
+            return _source.Substring(_currentPos, _currentLineEnd - _currentPos);
         }
 
         public string ReadToLineEndOr(char ch)
         {
             int end = _source.IndexOf(ch, _currentPos, _currentLineEnd - _currentPos);
+            return _source.Substring(_currentPos, end == -1 ? _currentLineEnd : end);
+        }
+
+        public string ReadTo(char ch)
+        {
+            int end = _source.IndexOf(ch);
+
+            if (end == -1)
+                throw new ParseFailedException("Unexpected end-of-text");
+            if (end > _currentLineEnd)
+                throw new ParseFailedException($"Unexpected end-of-line at position {end}");
+
             return _source.Substring(_currentPos, end);
         }
     }
