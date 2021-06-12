@@ -10,6 +10,6 @@ namespace ILVisualizer.Domain.Models.IL
     public struct ILInstruction
     {
         public ILInstructionType Type;
-        // Arguments will be added here
+        public int IntArg;
     }
 }
