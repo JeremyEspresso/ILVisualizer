@@ -85,22 +85,22 @@ namespace ILVisualizer.UnitTests.Parsing
         }
 
         [Fact]
-        public void ReadToLineEndOr_ToLineEnd()
+        public void ReadToLineEndOrToChar_ToLineEnd()
         {
             var parser = new TestParser();
             parser.Initialize("abc\r\nd e");
 
-            Assert.Equal("abc", parser.ReadToLineEndOr(' '));
+            Assert.Equal("abc", parser.ReadToLineEndOrToChar(' '));
             parser.AssertValues(3, 3);
         }
 
         [Fact]
-        public void ReadToLineEndOr_ToProvidedChar()
+        public void ReadToLineEndOrToChar_ToProvidedChar()
         {
             var parser = new TestParser();
             parser.Initialize("ab c\r\nd e");
 
-            Assert.Equal("ab", parser.ReadToLineEndOr(' '));
+            Assert.Equal("ab", parser.ReadToLineEndOrToChar(' '));
             parser.AssertValues(2, 4);
         }
 

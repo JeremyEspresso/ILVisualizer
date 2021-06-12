@@ -41,7 +41,7 @@ namespace ILVisualizer.Application.Common.Services
             var res = new ILInstruction();
 
             // Parse the opcode
-            string opCodeStr = ReadToLineEndOr(' ').ToLower();
+            string opCodeStr = ReadToLineEndOrToChar(' ').ToLower();
             res.Type = SelectInstruction(opCodeStr);
 
             // Parse the operands (parameters)
@@ -75,7 +75,7 @@ namespace ILVisualizer.Application.Common.Services
 
         int ReadInt32Parameter(bool isLastParameter)
         {
-            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOr(' ');
+            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(' ');
 
             if (!int.TryParse(parameterData, out int val))
                 throw new ParseFailedException($"Invalid Int32 number in parameter at position {_currentPos}");
@@ -85,7 +85,7 @@ namespace ILVisualizer.Application.Common.Services
 
         sbyte ReadInt8Parameter(bool isLastParameter)
         {
-            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOr(' ');
+            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(' ');
 
             if (!sbyte.TryParse(parameterData, out sbyte val))
                 throw new ParseFailedException($"Invalid Int8 number in parameter at position {_currentPos}");

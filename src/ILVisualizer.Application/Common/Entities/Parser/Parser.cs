@@ -65,7 +65,7 @@ namespace ILVisualizer.Application.Common.Entities.Parser
             return res;
         }
 
-        public string ReadToLineEndOr(char ch)
+        public string ReadToLineEndOrToChar(char ch)
         {
             int end = _source.IndexOf(ch, _currentPos, _currentLineEnd - _currentPos);
             if (end == -1) end = _currentLineEnd;
