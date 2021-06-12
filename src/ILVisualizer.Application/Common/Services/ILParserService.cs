@@ -15,7 +15,7 @@ namespace ILVisualizer.Application.Common.Services
     {
         List<ILInstruction> _destination = new();
 
-        public IList<ILInstruction> ParseBlock(string str)
+        public IList<ILInstruction> Parse(string str)
         {
             Initialize(str);
 
@@ -29,6 +29,8 @@ namespace ILVisualizer.Application.Common.Services
                 AddInstruction();
                 isLastLine = TryMoveToNextLine();
             }
+
+            return _destination;
         }
 
         public void AddInstruction() => _destination.Add(ParseInstruction());

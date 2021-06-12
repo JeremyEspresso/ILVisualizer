@@ -15,53 +15,75 @@ namespace ILVisualizer.Application.Common.Entities.Parser
     {
         protected string _source;
         protected int _currentPos;
-        private int _currentLineEnd;
+        protected int _currentLineEnd;
 
         public void Initialize(string source)
         {
             _source = source;
+            TryUpdateLineEnd();
         }
 
-        // Returns: Whether this is the last line
+        const char CarriageReturn = '\r';
+        const char NewLine = '\n';
+
         public bool TryMoveToNextLine()
         {
+            if (_currentPos == _source.Length) return true;
+
+            char currentChar = _source[_currentPos];
+
             // We should be at the end of the line when calling this.
-            Debug.Assert(_source[_currentPos] == '\r' || _source[_currentPos] == '\n');
+            Debug.Assert(currentChar is CarriageReturn or NewLine);
 
-            _currentPos += _source[_currentPos] == '\r' ? 2 : 1;
-            _currentLineEnd = _source.IndexOf('\n', _currentPos);
+            _currentPos += currentChar == CarriageReturn ? 2 : 1;
+            if (!TryUpdateLineEnd()) return false;
 
-            // If there is no more "\n", this is the last line.
-            bool isLastLine = _currentLineEnd == -1;
-            if (isLastLine) _currentLineEnd = _source.Length;
+            return false;
+        }
 
-            // Put the line end on the '\r' if there is one.
+        private bool TryUpdateLineEnd()
+        {
+            // Try to get the next '\n'
+            _currentLineEnd = _source.IndexOf(NewLine, _currentPos);
+            if (_currentLineEnd == -1)
+            {
+                _currentLineEnd = _source.Length;
+                return false;
+            }
+
+            // Ensure we're behind the '\r'
             int oneBefore = _currentLineEnd - 1;
-            if (_source[oneBefore] == '\r') _currentLineEnd = oneBefore;
+            if (_source[oneBefore] == CarriageReturn) _currentLineEnd = oneBefore;
 
-            _currentLineEnd--;
-            return isLastLine;
+            return true;
         }
 
         public string ReadToLineEnd()
         {
-            return _source.Substring(_currentPos, _currentLineEnd - _currentPos);
+            string res = _source[_currentPos.._currentLineEnd];
+            _currentPos = _currentLineEnd;
+            return res;
         }
 
         public string ReadToLineEndOr(char ch)
         {
             int end = _source.IndexOf(ch, _currentPos, _currentLineEnd - _currentPos);
-            return _source.Substring(_currentPos, end == -1 ? _currentLineEnd : end);
+            if (end == -1) end = _currentLineEnd;
+
+            string res = _source[_currentPos..end];
+
+            _currentPos = end;
+            return res;
         }
 
         public string ReadTo(char ch)
         {
             int end = _source.IndexOf(ch);
 
-            if (end == -1)
-                throw new ParseFailedException("Unexpected end-of-text");
             if (end > _currentLineEnd)
                 throw new ParseFailedException($"Unexpected end-of-line at position {end}");
+            if (end == -1)
+                throw new ParseFailedException($"Expected {ch}");
 
             return _source.Substring(_currentPos, end);
         }
