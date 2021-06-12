@@ -12,8 +12,13 @@ namespace ILVisualizer.Domain.Models.EvalStack
         public EvalStackOperationType Type;
 
         /// <summary>
-        /// The step this item was first pushed at
+        /// The step this item was pushed on
         /// </summary>
-        public int PushedStepNo;
+        public ushort PushedStepNo;
+
+        /// <summary>
+        /// The step this item was popped off
+        /// </summary>
+        public ushort PoppedStepNo;
     }
 }

@@ -14,7 +14,7 @@ namespace ILVisualizer.Domain.Models.Processor
         [FieldOffset(0)]
         public byte ItemsPopped;
 
-        [FieldOffset(4)]
+        [FieldOffset(1)]
         public bool HasMultiplePushed;
 
         // If only one item was pushed on:

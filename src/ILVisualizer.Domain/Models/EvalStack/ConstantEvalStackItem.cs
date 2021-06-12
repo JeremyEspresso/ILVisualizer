@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace ILVisualizer.Domain.Models.EvalStack
 {
-    public class NumericalEvalStackItem : EvalStackItem
+    public class ConstantEvalStackItem : EvalStackItem
     {
         public long Value;
+
+        public ConstantEvalStackItem(long value) => Value = value;
     }
 }
