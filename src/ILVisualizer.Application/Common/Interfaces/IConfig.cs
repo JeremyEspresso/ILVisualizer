@@ -1,4 +1,4 @@
-﻿using ILVisualizer.Application.Common.ConfigOptions;
+﻿using ILVisualizer.Application.Common.Config.Options;
 
 namespace ILVisualizer.Application.Common.Interfaces
 {

@@ -1,8 +1,8 @@
 ﻿using System;
-using ILVisualizer.Application.Common.ConfigOptions;
+using ILVisualizer.Application.Common.Config.Options;
 using ILVisualizer.Application.Common.Interfaces;
 
-namespace ILVisualizer.Application.Common
+namespace ILVisualizer.Application.Common.Config
 {
 	public class Config : IConfig
 	{

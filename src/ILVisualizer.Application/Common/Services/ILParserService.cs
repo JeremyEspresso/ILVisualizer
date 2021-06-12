@@ -1,8 +1,8 @@
 ﻿using ILVisualizer.Application.Common.Entities.Parser;
 using ILVisualizer.Application.Common.Exceptions.Parser;
 using ILVisualizer.Application.Common.Interfaces;
-using ILVisualizer.Domain.Enums.IL;
-using ILVisualizer.Domain.Models.IL;
+using ILVisualizer.Domain.Enums;
+using ILVisualizer.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
