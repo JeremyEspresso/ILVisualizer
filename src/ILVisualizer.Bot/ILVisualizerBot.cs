@@ -9,6 +9,7 @@ using Finite.Commands;
 using Finite.Commands.Parsing;
 using ILVisualizer.Application.Common;
 using ILVisualizer.Application.Common.Entities;
+using ILVisualizer.Application.Common.Entities.DiscordCommands;
 using ILVisualizer.Application.Common.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

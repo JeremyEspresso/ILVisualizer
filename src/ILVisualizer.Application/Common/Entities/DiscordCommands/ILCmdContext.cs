@@ -1,6 +1,6 @@
 ﻿using DSharpPlus.Entities;
 
-namespace ILVisualizer.Application.Common.Entities
+namespace ILVisualizer.Application.Common.Entities.DiscordCommands
 {
 	public class ILCmdContext
 	{

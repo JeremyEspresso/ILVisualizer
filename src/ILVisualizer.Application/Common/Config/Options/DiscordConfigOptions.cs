@@ -1,4 +1,4 @@
-﻿namespace ILVisualizer.Application.Common.ConfigOptions
+﻿namespace ILVisualizer.Application.Common.Config.Options
 {
 	public class DiscordConfigOptions
 	{

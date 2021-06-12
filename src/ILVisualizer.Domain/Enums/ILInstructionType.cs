@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ILVisualizer.Domain.Enums.IL
+namespace ILVisualizer.Domain.Enums
 {
     public enum ILInstructionType
     {

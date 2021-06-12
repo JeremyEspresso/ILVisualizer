@@ -6,6 +6,7 @@ using Finite.Commands;
 using Finite.Commands.AttributedModel;
 using ILVisualizer.Application.Common;
 using ILVisualizer.Application.Common.Entities;
+using ILVisualizer.Application.Common.Entities.DiscordCommands;
 using Microsoft.Extensions.Logging;
 
 namespace ILVisualizer.Bot.Modules
