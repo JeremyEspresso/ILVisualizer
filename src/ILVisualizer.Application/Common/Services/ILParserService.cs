@@ -24,11 +24,11 @@ namespace ILVisualizer.Application.Common.Services
             AddInstruction();
 
             // Parse the rest
-            bool isLastLine = TryMoveToNextLine();
-            while (!isLastLine)
+            bool isEnd = TryMoveToNextLine();
+            while (!isEnd)
             {
                 AddInstruction();
-                isLastLine = TryMoveToNextLine();
+                isEnd = TryMoveToNextLine();
             }
 
             return _destination;
