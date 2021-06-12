@@ -1,5 +1,6 @@
 ﻿using ILVisualizer.Application.Common.Entities.Parser;
 using ILVisualizer.Application.Common.Exceptions.Parser;
+using ILVisualizer.Application.Common.Interfaces;
 using ILVisualizer.Domain.Enums.IL;
 using ILVisualizer.Domain.Models.IL;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ILVisualizer.Application.Common.Services
 {
-    public class ILParserService : Parser
+    public class ILParserService : Parser, IILParserService
     {
         List<ILInstruction> _destination = new();
 
