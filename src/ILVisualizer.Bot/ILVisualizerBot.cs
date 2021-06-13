@@ -22,7 +22,8 @@ namespace ILVisualizer.Bot
 		private ICommandContextFactory _commandContextFactory = null!;
 		private ICommandExecutor _commandExecutor = null!;
 		private ICommandParser _commandParser = null!;
-		private ICommandStore _commandStore = null!;
+
+		private const char Prefix = '+';
 
 		public ILVisualizerBot(
 			DiscordClient discordClient,
@@ -44,7 +45,6 @@ namespace ILVisualizer.Bot
 			_commandContextFactory = scope.ServiceProvider.GetRequiredService<ICommandContextFactory>();
 			_commandExecutor = scope.ServiceProvider.GetRequiredService<ICommandExecutor>();
 			_commandParser = scope.ServiceProvider.GetRequiredService<ICommandParser>();
-			_commandStore = scope.ServiceProvider.GetRequiredService<ICommandStore>();
 
 			SubscribeEvents();
 
@@ -57,7 +57,7 @@ namespace ILVisualizer.Bot
 
 		private async Task HandleCommand(MessageCreateEventArgs e)
 		{
-			if (e.Author.IsBot) return;
+			if (e.Message.Content[0] != Prefix || e.Author.IsBot) return;
 
 			var context = _commandContextFactory.CreateContext();
 
