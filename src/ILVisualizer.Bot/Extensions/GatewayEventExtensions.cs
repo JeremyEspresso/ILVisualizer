@@ -13,7 +13,7 @@ namespace ILVisualizer.Bot.Extensions
 				return true;
 			}
 
-			commandContent = null;
+			commandContent = string.Empty;
 			return false;
 		}		
 	}
