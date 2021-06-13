@@ -3,12 +3,7 @@ using ILVisualizer.Application.Common.Exceptions.Parser;
 using ILVisualizer.Application.Common.Interfaces;
 using ILVisualizer.Domain.Enums;
 using ILVisualizer.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ILVisualizer.Application.Common.Services
 {

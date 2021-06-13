@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using ILVisualizer.Bot.DependencyInjection;
+﻿using ILVisualizer.Bot.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace ILVisualizer.Bot

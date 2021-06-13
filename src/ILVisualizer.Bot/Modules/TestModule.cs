@@ -1,32 +1,28 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DSharpPlus;
-using DSharpPlus.EventArgs;
 using Finite.Commands;
 using Finite.Commands.AttributedModel;
-using ILVisualizer.Application.Common;
-using ILVisualizer.Application.Common.Entities;
 using ILVisualizer.Application.Common.Entities.DiscordCommands;
 using Microsoft.Extensions.Logging;
 
 namespace ILVisualizer.Bot.Modules
 {
-	[Group("+dbg")]
 	public class TestModule : Module
 	{
+		private readonly DiscordClient _client;
 		private readonly ILogger<TestModule> _logger;
 
-		public TestModule(ILogger<TestModule> logger)
+		public TestModule(DiscordClient client, ILogger<TestModule> logger)
 		{
+			_client = client;
 			_logger = logger;
 		}
 
-		[Command("ping")]
-		public async ValueTask<ICommandResult> PingPongCommand([Remainder] string a)
+		[Command("+ping")]
+		public async ValueTask<ICommandResult> PingPongCommand()
 		{
 			ILCmdContext commandContext = (Context.Items[ILCmdContext.Ctx] as ILCmdContext)!;
-				
-			await commandContext!.Channel.SendMessageAsync($"pong - {a}");
+			await commandContext!.Channel.SendMessageAsync($"pong!\n**WebSocket Latency:** `{_client.Ping}`ms");
 			_logger.LogDebug("ping command executed");
 			return await new ValueTask<ICommandResult>(new NoContentCommandResult());
 		}

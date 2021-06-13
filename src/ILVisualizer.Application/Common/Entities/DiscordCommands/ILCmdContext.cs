@@ -6,10 +6,7 @@ namespace ILVisualizer.Application.Common.Entities.DiscordCommands
 	{
 		public const string Ctx = "ctx";
 
-		public ILCmdContext(DiscordMessage message)
-		{
-			Message = message;
-		}
+		public ILCmdContext(DiscordMessage message) => Message = message;
 
 		public DiscordMessage Message { get; }
 
