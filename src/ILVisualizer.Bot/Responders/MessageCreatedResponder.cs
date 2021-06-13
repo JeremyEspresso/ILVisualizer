@@ -3,6 +3,7 @@ using Finite.Commands;
 using Finite.Commands.Parsing;
 using ILVisualizer.Application.Common;
 using ILVisualizer.Application.Common.Interfaces;
+using ILVisualizer.Bot.Extensions;
 using Microsoft.Extensions.Logging;
 using Remora.Discord.API.Abstractions.Gateway.Events;
 using Remora.Discord.Gateway;
@@ -34,7 +35,7 @@ namespace ILVisualizer.Bot.Responders
 
 		public async Task<Result> RespondAsync(IMessageCreate gatewayEvent, CancellationToken ct = new())
 		{
-			if (gatewayEvent.Content[0] != _prefix || (gatewayEvent.Author.IsBot.HasValue && gatewayEvent.Author.IsBot.Value))
+			if (!gatewayEvent.TrySlicePrefix(_prefix, out var commandContent) || (gatewayEvent.Author.IsBot.HasValue && gatewayEvent.Author.IsBot.Value))
 			{
 				return Result.FromSuccess();
 			}
@@ -43,7 +44,7 @@ namespace ILVisualizer.Bot.Responders
 
 			try
 			{
-				_commandParser.Parse(context, gatewayEvent.Content);
+				_commandParser.Parse(context, commandContent);
 			}
 			catch
 			{
