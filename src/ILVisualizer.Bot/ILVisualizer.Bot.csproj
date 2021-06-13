@@ -15,10 +15,15 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Remora.Discord" Version="3.0.32" />
 		<PackageReference Include="Finite.Commands.Core" Version="0.3.1-alpha.931217775" />
 		<PackageReference Include="Finite.Commands.Models.AttributedModel" Version="0.3.1-alpha.931217775" />
 		<PackageReference Include="Finite.Commands.Parsing.Positional" Version="0.3.1-alpha.931217775" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Responders\" />
 	</ItemGroup>
 
 </Project>
