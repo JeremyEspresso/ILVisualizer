@@ -20,7 +20,7 @@ namespace ILVisualizer.Bot.Modules
 			_logger = logger;
 		}
 
-		[Command("+ping")]
+		[Command("ping")]
 		public async ValueTask<ICommandResult> PingPongCommand()
 		{
 			IMessageCreate ctx = (Context.Items[CommandConstants.Ctx] as IMessageCreate)!;
