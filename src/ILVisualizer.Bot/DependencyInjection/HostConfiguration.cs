@@ -1,11 +1,10 @@
-﻿using System;
+﻿using ILVisualizer.Application.Common.Config;
+using ILVisualizer.Application.Common.Interfaces;
+using ILVisualizer.Application.DependencyInjection;
+using System;
 using DSharpPlus;
 using Finite.Commands;
 using Finite.Commands.Parsing;
-using ILVisualizer.Application.Common;
-using ILVisualizer.Application.Common.Config;
-using ILVisualizer.Application.Common.Interfaces;
-using ILVisualizer.Application.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

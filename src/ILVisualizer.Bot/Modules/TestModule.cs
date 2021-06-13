@@ -1,11 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DSharpPlus;
-using DSharpPlus.EventArgs;
 using Finite.Commands;
 using Finite.Commands.AttributedModel;
-using ILVisualizer.Application.Common;
-using ILVisualizer.Application.Common.Entities;
 using ILVisualizer.Application.Common.Entities.DiscordCommands;
 using Microsoft.Extensions.Logging;
 

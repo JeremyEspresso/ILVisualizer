@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using ILVisualizer.Application.Common.Entities.DiscordCommands;
+using ILVisualizer.Application.Common.Interfaces;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.EventArgs;
 using Finite.Commands;
 using Finite.Commands.Parsing;
-using ILVisualizer.Application.Common;
-using ILVisualizer.Application.Common.Entities;
-using ILVisualizer.Application.Common.Entities.DiscordCommands;
-using ILVisualizer.Application.Common.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -57,10 +53,7 @@ namespace ILVisualizer.Bot
 			_logger.LogInformation("Discord initialized");
 		}
 
-		private void SubscribeEvents()
-		{
-			_discord.MessageCreated += async (_, e) => await HandleCommand(e);
-		}
+		private void SubscribeEvents() => _discord.MessageCreated += async (_, e) => await HandleCommand(e);
 
 		private async Task HandleCommand(MessageCreateEventArgs e)
 		{
