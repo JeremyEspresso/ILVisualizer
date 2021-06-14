@@ -1,10 +1,6 @@
 ﻿using ILVisualizer.Domain.Models.EvalStack;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ILVisualizer.Domain.Models.Processor
 {
@@ -44,14 +40,8 @@ namespace ILVisualizer.Domain.Models.Processor
         // (Never used)
         public override int GetHashCode() => 0;
 
-        public static bool operator ==(Step left, Step right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(Step left, Step right) => left.Equals(right);
 
-        public static bool operator !=(Step left, Step right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(Step left, Step right) => !(left == right);
     }
 }

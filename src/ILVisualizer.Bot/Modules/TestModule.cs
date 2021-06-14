@@ -5,7 +5,6 @@ using ILVisualizer.Application.Common;
 using Microsoft.Extensions.Logging;
 using Remora.Discord.API.Abstractions.Gateway.Events;
 using Remora.Discord.API.Abstractions.Rest;
-using Remora.Discord.Core;
 
 namespace ILVisualizer.Bot.Modules
 {

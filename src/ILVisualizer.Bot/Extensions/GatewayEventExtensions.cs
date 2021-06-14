@@ -1,5 +1,4 @@
 ﻿using Remora.Discord.API.Abstractions.Gateway.Events;
-using System;
 
 namespace ILVisualizer.Bot.Extensions
 {

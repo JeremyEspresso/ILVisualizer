@@ -1,12 +1,10 @@
-﻿
-using Finite.Commands;
+﻿using Finite.Commands;
 using Finite.Commands.Parsing;
 using ILVisualizer.Application.Common;
 using ILVisualizer.Application.Common.Interfaces;
 using ILVisualizer.Bot.Extensions;
 using Microsoft.Extensions.Logging;
 using Remora.Discord.API.Abstractions.Gateway.Events;
-using Remora.Discord.Gateway;
 using Remora.Discord.Gateway.Responders;
 using Remora.Results;
 using System;

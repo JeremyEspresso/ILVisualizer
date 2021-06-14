@@ -2,11 +2,7 @@
 using ILVisualizer.Domain.Models;
 using ILVisualizer.Domain.Models.EvalStack;
 using ILVisualizer.Domain.Models.Processor;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ILVisualizer.Application.Common.Services
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ILVisualizer.Domain.Models.Processor
+﻿namespace ILVisualizer.Domain.Models.Processor
 {
     /// <summary>
     /// Represents a statement break: Which is a point where you move onto the next statement
