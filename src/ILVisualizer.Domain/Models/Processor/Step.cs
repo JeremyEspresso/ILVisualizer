@@ -24,5 +24,34 @@ namespace ILVisualizer.Domain.Models.Processor
         // If multiple items were pushed on:
         [FieldOffset(8)]
         public EvalStackItem[] MultiplePushed;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Step step)
+            {
+                if (ItemsPopped != step.ItemsPopped) return false;
+                if (HasMultiplePushed != step.HasMultiplePushed) return false;
+
+                if (HasMultiplePushed && !MultiplePushed.SequenceEqual(step.MultiplePushed)) return false;
+                if (!HasMultiplePushed && !SinglePushed.Equals(step.SinglePushed)) return false;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        // (Never used)
+        public override int GetHashCode() => 0;
+
+        public static bool operator ==(Step left, Step right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Step left, Step right)
+        {
+            return !(left == right);
+        }
     }
 }

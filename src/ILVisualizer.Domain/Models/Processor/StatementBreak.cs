@@ -13,6 +13,11 @@ namespace ILVisualizer.Domain.Models.Processor
     /// </summary>
     public struct StatementBreak
     {
+        /// <summary>
+        /// The step this break starts on (visually the step right below the break)
+        /// </summary>
         public int StepStartNo;
+
+        public StatementBreak(int stepStartNo) => StepStartNo = stepStartNo;
     }
 }

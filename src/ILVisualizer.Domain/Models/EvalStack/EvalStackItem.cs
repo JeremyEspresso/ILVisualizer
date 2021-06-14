@@ -17,5 +17,8 @@ namespace ILVisualizer.Domain.Models.EvalStack
         /// The step this item was popped off
         /// </summary>
         public int PoppedStepNo;
+
+        protected bool BaseEquals(EvalStackItem obj) => 
+            PushedStepNo == obj.PushedStepNo && PoppedStepNo == obj.PoppedStepNo;
     }
 }

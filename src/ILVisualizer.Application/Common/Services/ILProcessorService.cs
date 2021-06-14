@@ -81,6 +81,8 @@ namespace ILVisualizer.Application.Common.Services
         public void PushOne(EvalStackItem item)
         {
             CurrentEvalStack.Push(item);
+
+            CurrentStep.SinglePushed = item;
         }
 
         public void PushMany(EvalStackItem[] item)
