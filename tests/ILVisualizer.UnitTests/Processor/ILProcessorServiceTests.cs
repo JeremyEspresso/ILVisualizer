@@ -39,6 +39,7 @@ namespace ILVisualizer.UnitTests.Processor
             };
 
             CollectionAssert.Equal(expectedSteps, result.Steps);
+            CollectionAssert.Equal(Array.Empty<StatementBreak>(), result.Breaks);
         }
 
         [Fact]
@@ -74,6 +75,7 @@ namespace ILVisualizer.UnitTests.Processor
             };
 
             CollectionAssert.Equal(expectedSteps, result.Steps);
+            CollectionAssert.Equal(Array.Empty<StatementBreak>(), result.Breaks);
         }
     }
 }
