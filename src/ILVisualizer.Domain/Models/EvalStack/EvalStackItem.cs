@@ -8,17 +8,14 @@ namespace ILVisualizer.Domain.Models.EvalStack
 {
     public abstract class EvalStackItem
     {
-        public EvalStackItemType ItemType;
-        public EvalStackOperationType Type;
-
         /// <summary>
         /// The step this item was pushed on
         /// </summary>
-        public ushort PushedStepNo;
+        public int PushedStepNo;
 
         /// <summary>
         /// The step this item was popped off
         /// </summary>
-        public ushort PoppedStepNo;
+        public int PoppedStepNo;
     }
 }

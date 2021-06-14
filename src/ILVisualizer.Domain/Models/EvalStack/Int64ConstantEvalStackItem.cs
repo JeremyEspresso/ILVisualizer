@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ILVisualizer.Domain.Models.EvalStack
 {
-    public class ConstantEvalStackItem : EvalStackItem
+    public class Int64ConstantEvalStackItem : EvalStackItem
     {
-        public long Value;
+        public long Constant { get; }
 
-        public ConstantEvalStackItem(long value) => Value = value;
+        public Int64ConstantEvalStackItem(long constant) => Constant = constant;
     }
 }

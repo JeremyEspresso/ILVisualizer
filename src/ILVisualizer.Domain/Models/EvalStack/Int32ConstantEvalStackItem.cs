@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ILVisualizer.Domain.Models.EvalStack
 {
-    public enum EvalStackItemType : byte
+    public class Int32ConstantEvalStackItem : EvalStackItem
     {
-		Int32,
-		Int64
-	}
+        public int Value { get; }
+
+        public Int32ConstantEvalStackItem(int value) => Value = value;
+    }
 }

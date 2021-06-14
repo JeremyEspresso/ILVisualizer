@@ -54,11 +54,11 @@ namespace ILVisualizer.Application.Common.Services
                 case ILInstructionType.Ldc_I4_6:
                 case ILInstructionType.Ldc_I4_7:
                 case ILInstructionType.Ldc_I4_8:
-                    CurrentStep.SinglePushed = new ConstantEvalStackItem((int)instruction.Type);
+                    CurrentStep.SinglePushed = new Int32ConstantEvalStackItem((int)instruction.Type);
                     break;
                 case ILInstructionType.Ldc_I4_S:
                 case ILInstructionType.Ldc_I4:
-                    CurrentStep.SinglePushed = new ConstantEvalStackItem(instruction.IntArg);
+                    CurrentStep.SinglePushed = new Int32ConstantEvalStackItem(instruction.IntArg);
                     break;
             }
         }
