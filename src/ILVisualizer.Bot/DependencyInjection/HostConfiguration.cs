@@ -27,6 +27,7 @@ namespace ILVisualizer.Bot.DependencyInjection
 			{
 				services.AddDiscordGateway(_ => applicationConfig.DiscordConfig.Token);
 				services.AddResponder<MessageCreatedResponder>();
+				services.AddResponder<InteractionCreatedResponder>();
 
 				services.AddSingleton(applicationConfig);
 				services.AddApplication();
