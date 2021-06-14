@@ -4,7 +4,9 @@ using Finite.Commands.AttributedModel;
 using ILVisualizer.Application.Common;
 using Microsoft.Extensions.Logging;
 using Remora.Discord.API.Abstractions.Gateway.Events;
+using Remora.Discord.API.Abstractions.Objects;
 using Remora.Discord.API.Abstractions.Rest;
+using Remora.Discord.API.Objects;
 
 namespace ILVisualizer.Bot.Modules
 {
@@ -27,6 +29,23 @@ namespace ILVisualizer.Bot.Modules
 			await _channelAPI.CreateMessageAsync(ctx.ChannelID, "Hello from ping command");
 			
 			_logger.LogDebug("ping command executed");
+			return await new ValueTask<ICommandResult>(new NoContentCommandResult());
+		}
+
+		[Command("test")]
+		public async ValueTask<ICommandResult> TestCommand()
+		{
+			IMessageCreate ctx = (Context.Items[CommandConstants.Ctx] as IMessageCreate)!;
+
+			await _channelAPI.CreateMessageAsync(ctx.ChannelID, "test message", 
+				components: new[]
+				{
+					new ActionRowComponent(new []
+					{
+						new ButtonComponent(ButtonComponentStyle.Primary, "button", CustomID: "unique_identifier")
+					})
+				});
+
 			return await new ValueTask<ICommandResult>(new NoContentCommandResult());
 		}
 	}
