@@ -35,7 +35,9 @@ namespace ILVisualizer.Bot.Responders
 
 		public async Task<Result> RespondAsync(IMessageCreate gatewayEvent, CancellationToken ct = new())
 		{
-			if (!gatewayEvent.TrySlicePrefix(_prefix, out var commandContent) || (gatewayEvent.Author.IsBot.HasValue && gatewayEvent.Author.IsBot.Value))
+			if ((gatewayEvent.Author.IsBot.HasValue && gatewayEvent.Author.IsBot.Value) 
+			    || gatewayEvent.Embeds.Count > 1
+			    || !gatewayEvent.TrySlicePrefix(_prefix, out var commandContent))
 			{
 				return Result.FromSuccess();
 			}
