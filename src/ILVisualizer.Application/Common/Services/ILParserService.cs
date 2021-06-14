@@ -69,6 +69,12 @@ namespace ILVisualizer.Application.Common.Services
                 "ldc.i4.m1" => ILInstructionType.Ldc_I4_M1,
                 "ldc.i4.s" => ILInstructionType.Ldc_I4_S,
                 "ldc.i4" => ILInstructionType.Ldc_I4,
+                "ldc.i8" => ILInstructionType.Ldc_I8,
+                "add" => ILInstructionType.Add,
+                "sub" => ILInstructionType.Sub,
+                "mul" => ILInstructionType.Mul,
+                "div" => ILInstructionType.Div,
+                "rem" => ILInstructionType.Rem,
                 _ => throw new ParseFailedException($"Unrecognized instruction: {opCodeStr}")
             };
         }

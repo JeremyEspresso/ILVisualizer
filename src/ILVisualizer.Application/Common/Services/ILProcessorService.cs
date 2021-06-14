@@ -95,5 +95,95 @@ namespace ILVisualizer.Application.Common.Services
             for (int i = 0; i < item.Length; i++)
                 CurrentEvalStack.Push(item[i]);
         }
+
+        enum FoldMode
+        {
+            None,
+            Int32,
+            Int64
+        }
+
+        public void PerformOperation(EvalStackOperatorType opType)
+        {
+            var second = Pop();
+            var first = Pop();
+
+            // Try to do any constant folding if both the first and second are constants.
+            // (e.g. 3 + 4 can become 7)
+            var mode = GetFoldMode();
+
+            if (mode == FoldMode.Int32)
+            {
+                var firstConstant = GetConstantValueInt(first);
+                var secondConstant = GetConstantValueInt(second);
+
+                PushOne(Fold32(firstConstant, secondConstant));
+            }
+            else if (mode == FoldMode.Int64)
+            {
+                var firstConstant = GetConstantValueLong(first);
+                var secondConstant = GetConstantValueLong(second);
+
+                PushOne(Fold64(firstConstant, secondConstant));
+            }
+            else
+            {
+                PushOne(new OperatorEvalStackItem(opType, first, second));
+            }
+
+            FoldMode GetFoldMode()
+            {
+                if (first is Int32ConstantEvalStackItem first32)
+                {
+                    if (second is Int32ConstantEvalStackItem)
+                        return FoldMode.Int32;
+                    else if (second is Int64ConstantEvalStackItem)
+                        return FoldMode.Int64;
+                }
+                else if (first is Int64ConstantEvalStackItem first64)
+                {
+                    if (second is Int32ConstantEvalStackItem or Int64ConstantEvalStackItem)
+                        return FoldMode.Int64;
+                }
+
+                return FoldMode.None;
+            }
+
+            Int32ConstantEvalStackItem Fold32(int a, int b)
+            {
+                int folded = opType switch
+                {
+                    EvalStackOperatorType.Add => a + b,
+                    EvalStackOperatorType.Subtract => a - b,
+                    EvalStackOperatorType.Multiply => a * b,
+                    EvalStackOperatorType.Divide => a / b,
+                    EvalStackOperatorType.Modular => a % b,
+                    _ => throw new Exception("Unsupported operator type in converter")
+                };
+
+                return new(folded);
+            }
+
+            Int64ConstantEvalStackItem Fold64(long a, long b)
+            {
+                long folded = opType switch
+                {
+                    EvalStackOperatorType.Add => a + b,
+                    EvalStackOperatorType.Subtract => a - b,
+                    EvalStackOperatorType.Multiply => a * b,
+                    EvalStackOperatorType.Divide => a / b,
+                    EvalStackOperatorType.Modular => a % b,
+                    _ => throw new Exception("Unsupported operator type in converter")
+                };
+
+                return new(folded);
+            }
+        }
+
+        public int GetConstantValueInt(EvalStackItem item) =>
+            ((Int32ConstantEvalStackItem)item).Value;
+
+        public long GetConstantValueLong(EvalStackItem item) =>
+            item is Int32ConstantEvalStackItem item32 ? item32.Value : ((Int64ConstantEvalStackItem)item).Value;
     }
 }
