@@ -45,6 +45,18 @@ namespace ILVisualizer.Application.Common.Services
         {
             switch (instruction.Type)
             {
+                case ILInstructionType.Ldc_I4_0:
+                case ILInstructionType.Ldc_I4_1:
+                case ILInstructionType.Ldc_I4_2:
+                case ILInstructionType.Ldc_I4_3:
+                case ILInstructionType.Ldc_I4_4:
+                case ILInstructionType.Ldc_I4_5:
+                case ILInstructionType.Ldc_I4_6:
+                case ILInstructionType.Ldc_I4_7:
+                case ILInstructionType.Ldc_I4_8:
+                    CurrentStep.SinglePushed = new ConstantEvalStackItem((int)instruction.Type);
+                    break;
+                case ILInstructionType.Ldc_I4_S:
                 case ILInstructionType.Ldc_I4:
                     CurrentStep.SinglePushed = new ConstantEvalStackItem(instruction.IntArg);
                     break;
