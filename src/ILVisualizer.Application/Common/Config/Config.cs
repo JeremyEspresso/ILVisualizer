@@ -11,9 +11,8 @@ namespace ILVisualizer.Application.Common.Config
 		public DiscordConfigOptions DiscordConfig { get; init; }
 		public EnvironmentConfigOptions EnvironmentConfig { get; init; }
 
-		public static IConfig Get()
-		{
-			return new Config
+		public static IConfig Get() =>
+			new Config
 			{
 				DiscordConfig = new DiscordConfigOptions
 				{
@@ -26,6 +25,5 @@ namespace ILVisualizer.Application.Common.Config
 					EnvironmentName = Environment.GetEnvironmentVariable(ApplicationConstants.EnvironmentNameEnvironmentVariable),
 				}
 			};
-		}
 	}
 }

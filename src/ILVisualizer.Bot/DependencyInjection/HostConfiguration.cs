@@ -1,13 +1,13 @@
-﻿using System;
-using DSharpPlus;
-using Finite.Commands;
-using Finite.Commands.Parsing;
-using ILVisualizer.Application.Common;
-using ILVisualizer.Application.Common.Config;
+﻿using ILVisualizer.Application.Common.Config;
 using ILVisualizer.Application.Common.Interfaces;
 using ILVisualizer.Application.DependencyInjection;
+using System;
+using Finite.Commands;
+using Finite.Commands.Parsing;
+using ILVisualizer.Bot.Responders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Remora.Discord.Gateway.Extensions;
 
 namespace ILVisualizer.Bot.DependencyInjection
 {
@@ -25,12 +25,9 @@ namespace ILVisualizer.Bot.DependencyInjection
 
 			builder.ConfigureServices((_, services) =>
 			{
-				services.AddSingleton(new DiscordClient(new DiscordConfiguration
-				{
-					Token = applicationConfig.DiscordConfig.Token,
-					TokenType = TokenType.Bot,
-					Intents = DiscordIntents.GuildMessages | DiscordIntents.Guilds,
-				}));
+				services.AddDiscordGateway(_ => applicationConfig.DiscordConfig.Token);
+				services.AddResponder<MessageCreatedResponder>();
+				services.AddResponder<InteractionCreatedResponder>();
 
 				services.AddSingleton(applicationConfig);
 				services.AddApplication();
@@ -41,6 +38,7 @@ namespace ILVisualizer.Bot.DependencyInjection
 					.AddAttributedCommands(x
 						=> x.Assemblies.Add(typeof(Startup).Assembly.Location));
 
+				services.AddHttpClient();
 				services.AddHostedService<ILVisualizerBot>();
 			});
 

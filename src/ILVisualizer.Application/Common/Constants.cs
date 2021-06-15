@@ -10,4 +10,10 @@
 		public const string EnvironmentNameEnvironmentVariable = "ENV";
 		public const string ApplicationNameEnvironmentVariable = "APP_NAME";
 	}
+
+	public static class CommandConstants
+	{
+		// Command Context Key
+		public const string Ctx = nameof(Ctx);
+	}
 }
