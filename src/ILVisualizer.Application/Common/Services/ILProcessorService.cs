@@ -41,7 +41,7 @@ namespace ILVisualizer.Application.Common.Services
             Result.Breaks = new List<StatementBreak>();
         }
 
-        public void ProcessInstruction(ILInstruction instruction)
+        void ProcessInstruction(ILInstruction instruction)
         {
             switch (instruction.Type)
             {
@@ -61,15 +61,25 @@ namespace ILVisualizer.Application.Common.Services
                 case ILInstructionType.Ldc_I4:
                     PushOne(new Int32ConstantEvalStackItem(instruction.IntArg));
                     break;
+                case ILInstructionType.Add:
+                case ILInstructionType.Sub:
+                case ILInstructionType.Mul:
+                case ILInstructionType.Div:
+                case ILInstructionType.Rem:
+                    PerformOperation((EvalStackOperatorType)(instruction.Type - ILInstructionType.Add));
+                    break;
+                case ILInstructionType.Ret:
+                    Pop();
+                    break;
             }
         }
 
-        public void InsertStatementBreak()
+        void InsertStatementBreak()
         {
             Result.Breaks.Add(new StatementBreak(Result.Steps.Count));
         }
 
-        public EvalStackItem Pop()
+        EvalStackItem Pop()
         {
             CurrentStep.ItemsPopped++;
 
@@ -78,14 +88,14 @@ namespace ILVisualizer.Application.Common.Services
             return item;
         }
 
-        public void PushOne(EvalStackItem item)
+        void PushOne(EvalStackItem item)
         {
             CurrentEvalStack.Push(item);
 
             CurrentStep.SinglePushed = item;
         }
 
-        public void PushMany(EvalStackItem[] item)
+        void PushMany(EvalStackItem[] item)
         {
             // Push to the current step.
             CurrentStep.HasMultiplePushed = true;
@@ -103,7 +113,7 @@ namespace ILVisualizer.Application.Common.Services
             Int64
         }
 
-        public void PerformOperation(EvalStackOperatorType opType)
+        void PerformOperation(EvalStackOperatorType opType)
         {
             var second = Pop();
             var first = Pop();
