@@ -19,7 +19,6 @@ namespace ILVisualizer.Domain.Enums
         Ldc_I4_6 = 6,
         Ldc_I4_7 = 7,
         Ldc_I4_8 = 8,
-        Ldc_I8 = 9,
 
         // Parameterless - Basic maths operators
         Add = 32,
@@ -28,12 +27,19 @@ namespace ILVisualizer.Domain.Enums
         Div = 35,
         Rem = 36,
 
+        // Parameterless - Control flow
+        Ret = 64,
+
         // One single "Int8" parameter
         Int8Parametered_Instructions = 8192,
         Ldc_I4_S = 8193,
 
         // One single "Int32" parameter
         Int32Parametered_Instructions = 16384,
-        Ldc_I4 = 16385
+        Ldc_I4 = 16385,
+
+        // One single "Int64" parameter
+        Int64Parametered_Instructions = 32768,
+        Ldc_I8 = 32769,
     }
 }
