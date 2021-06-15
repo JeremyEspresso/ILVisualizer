@@ -9,7 +9,9 @@ namespace ILVisualizer.Application.Common.Services
 {
     public class ILParserService : Parser, IILParserService
     {
-        List<ILInstruction> _destination = new();
+	    const char Space = ' ';
+
+		List<ILInstruction> _destination = new();
 
         public IList<ILInstruction> Parse(string str)
         {
@@ -79,7 +81,7 @@ namespace ILVisualizer.Application.Common.Services
 
         long ReadInt64Parameter(bool isLastParameter)
         {
-            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(' ');
+            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(Space);
 
             if (!long.TryParse(parameterData, out long val))
                 throw new ParseFailedException($"Invalid Int64 number in parameter at position {_currentPos}");
@@ -89,7 +91,7 @@ namespace ILVisualizer.Application.Common.Services
 
         int ReadInt32Parameter(bool isLastParameter)
         {
-            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(' ');
+            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(Space);
 
             if (!int.TryParse(parameterData, out int val))
                 throw new ParseFailedException($"Invalid Int32 number in parameter at position {_currentPos}");
@@ -99,7 +101,7 @@ namespace ILVisualizer.Application.Common.Services
 
         sbyte ReadInt8Parameter(bool isLastParameter)
         {
-            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(' ');
+            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(Space);
 
             if (!sbyte.TryParse(parameterData, out sbyte val))
                 throw new ParseFailedException($"Invalid Int8 number in parameter at position {_currentPos}");
