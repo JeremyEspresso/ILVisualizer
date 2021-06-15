@@ -4,39 +4,28 @@ using System.Runtime.InteropServices;
 
 namespace ILVisualizer.Domain.Models.Processor
 {
-    [StructLayout(LayoutKind.Explicit)]
     public struct Step
     {
-        [FieldOffset(0)]
-        public byte ItemsPopped;
+        public EvalStackItem Pushed;
 
-        [FieldOffset(1)]
-        public bool HasMultiplePushed;
-
-        // If only one item was pushed on:
-        [FieldOffset(8)]
-        public EvalStackItem SinglePushed;
-
-        // If multiple items were pushed on:
-        [FieldOffset(8)]
-        public EvalStackItem[] MultiplePushed;
+        // EvalStackItem[] when multiple are popped, EvalStackItem when one is popped.
+        public object Popped;
 
         public override bool Equals(object obj)
         {
             if (obj is Step step)
             {
-                if (ItemsPopped != step.ItemsPopped) return false;
-                if (HasMultiplePushed != step.HasMultiplePushed) return false;
+				if (Pushed == null)
+					return step.Pushed == null;
+				else
+					if (!Pushed.Equals(step.Pushed)) return false;
 
-                if (HasMultiplePushed)                
-                    return MultiplePushed.SequenceEqual(step.MultiplePushed);
-                else
-                {
-                    if (SinglePushed == null)                    
-                        return MultiplePushed == null;
-                    else
-                        return SinglePushed.Equals(step.SinglePushed);
-                }
+				if (Popped == null)
+					return step.Popped == null;
+				else if (Popped is EvalStackItem singleItm)
+					return singleItm.Equals(step.Popped);
+				else if (Popped is EvalStackItem[] multiple)
+					return step.Popped is EvalStackItem[] stepMultiple && multiple.SequenceEqual(stepMultiple);
             }
 
             return false;

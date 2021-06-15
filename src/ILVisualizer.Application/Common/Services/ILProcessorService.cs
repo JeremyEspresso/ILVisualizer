@@ -84,28 +84,28 @@ namespace ILVisualizer.Application.Common.Services
         EvalStackItem Pop()
         {
             if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
-            CurrentStep.ItemsPopped++;
 
             item.PoppedStepNo = (ushort)Result.Steps.Count;
             return item;
         }
 
+        EvalStackItem[] PopMany(int count)
+        {
+            var popped = new EvalStackItem[count];
+
+            for (int i = popped.Length - 1; i >= 0; i--)
+			{
+                if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
+                popped[i] = item;
+            }
+
+            return popped;
+        }
+
         void PushOne(EvalStackItem item)
         {
             CurrentEvalStack.Push(item);
-
-            CurrentStep.SinglePushed = item;
-        }
-
-        void PushMany(EvalStackItem[] item)
-        {
-            // Push to the current step.
-            CurrentStep.HasMultiplePushed = true;
-            CurrentStep.MultiplePushed = item;
-
-            // Push to the curreneval stack.
-            for (int i = 0; i < item.Length; i++)
-                CurrentEvalStack.Push(item[i]);
+            CurrentStep.Pushed = item;
         }
 
         enum FoldMode
@@ -117,8 +117,9 @@ namespace ILVisualizer.Application.Common.Services
 
         void PerformOperation(EvalStackOperatorType opType)
         {
-            var second = Pop();
-            var first = Pop();
+            var parts = PopMany(2);
+            var first = parts[0];
+            var second = parts[1];
 
             // Try to do any constant folding if both the first and second are constants.
             // (e.g. 3 + 4 can become 7)

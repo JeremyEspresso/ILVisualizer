@@ -35,7 +35,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int32ConstantEvalStackItem(13),
+                    Pushed = new Int32ConstantEvalStackItem(13),
                 }
             };
 
@@ -69,7 +69,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int32ConstantEvalStackItem(2)
+                    Pushed = new Int32ConstantEvalStackItem(2)
                     {
                         PoppedStepNo = 1
                     },
@@ -115,7 +115,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int32ConstantEvalStackItem(2)
+                    Pushed = new Int32ConstantEvalStackItem(2)
                     {
                         PoppedStepNo = 2
                     },
@@ -124,7 +124,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int32ConstantEvalStackItem(5)
+                    Pushed = new Int32ConstantEvalStackItem(5)
                     {
                         PoppedStepNo = 2
                     },
@@ -133,7 +133,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 2,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int32ConstantEvalStackItem(7)
+                    Pushed = new Int32ConstantEvalStackItem(7)
                 }
             };
 
@@ -172,7 +172,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int64ConstantEvalStackItem(80000000000000)
+                    Pushed = new Int64ConstantEvalStackItem(80000000000000)
                     {
                         PoppedStepNo = 2
                     },
@@ -181,7 +181,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int32ConstantEvalStackItem(5)
+                    Pushed = new Int32ConstantEvalStackItem(5)
                     {
                         PoppedStepNo = 2
                     },
@@ -190,7 +190,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 2,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int64ConstantEvalStackItem(80000000000005)
+                    Pushed = new Int64ConstantEvalStackItem(80000000000005)
                 }
             };
 
@@ -229,7 +229,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int32ConstantEvalStackItem(7)
+                    Pushed = new Int32ConstantEvalStackItem(7)
                     {
                         PoppedStepNo = 2
                     },
@@ -238,7 +238,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int64ConstantEvalStackItem(80000000000000)
+                    Pushed = new Int64ConstantEvalStackItem(80000000000000)
                     {
                         PoppedStepNo = 2
                     },
@@ -247,7 +247,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 2,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int64ConstantEvalStackItem(80000000000007)
+                    Pushed = new Int64ConstantEvalStackItem(80000000000007)
                 }
             };
 
@@ -287,7 +287,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int64ConstantEvalStackItem(13)
+                    Pushed = new Int64ConstantEvalStackItem(13)
                     {
                         PoppedStepNo = 2
                     },
@@ -296,7 +296,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int64ConstantEvalStackItem(80000000000000)
+                    Pushed = new Int64ConstantEvalStackItem(80000000000000)
                     {
                         PoppedStepNo = 2
                     },
@@ -305,7 +305,7 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 2,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int64ConstantEvalStackItem(80000000000013)
+                    Pushed = new Int64ConstantEvalStackItem(80000000000013)
                 }
             };
 
@@ -348,13 +348,13 @@ namespace ILVisualizer.UnitTests.Processor
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int32ConstantEvalStackItem(2),
+                    Pushed = new Int32ConstantEvalStackItem(2),
                 },
                 new Step()
                 {
                     ItemsPopped = 0,
                     HasMultiplePushed = false,
-                    SinglePushed = new Int32ConstantEvalStackItem(5),
+                    Pushed = new Int32ConstantEvalStackItem(5),
                 }
             };
 
