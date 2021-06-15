@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ILVisualizer.Application.Common.Interfaces;
+using ILVisualizer.Application.Common.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ILVisualizer.Application.DependencyInjection
 {
@@ -6,7 +8,8 @@ namespace ILVisualizer.Application.DependencyInjection
 	{
 		public static IServiceCollection AddApplication(this IServiceCollection services)
 		{
-			// All Application layer services will be registered here. Remove this comment if one is added
+			services.AddScoped<IILParserService, ILParserService>();
+			services.AddScoped<IILProcessorService, ILProcessorService>();
 			return services;
 		}
 	}
