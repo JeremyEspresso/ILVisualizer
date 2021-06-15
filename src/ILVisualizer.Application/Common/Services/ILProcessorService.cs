@@ -1,5 +1,6 @@
 using System;
 using ILVisualizer.Application.Common.Exceptions.Processor;
+using ILVisualizer.Application.Common.Interfaces;
 using ILVisualizer.Domain.Enums;
 using ILVisualizer.Domain.Models;
 using ILVisualizer.Domain.Models.EvalStack;
@@ -8,8 +9,8 @@ using System.Collections.Generic;
 
 namespace ILVisualizer.Application.Common.Services
 {
-    public class ILProcessorService
-    {
+    public class ILProcessorService : IILProcessorService
+	{
         public Step CurrentStep = new();
 
         public ProcessorResult Result = new();
