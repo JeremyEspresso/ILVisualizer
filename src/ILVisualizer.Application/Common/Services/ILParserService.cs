@@ -40,7 +40,9 @@ namespace ILVisualizer.Application.Common.Services
             res.Type = SelectInstruction(opCodeStr);
 
             // Parse the operands (parameters)
-            if (res.Type > ILInstructionType.Int32Parametered_Instructions)            
+            if (res.Type > ILInstructionType.Int64Parametered_Instructions)
+                res.LongArg = ReadInt64Parameter(true);
+            else if (res.Type > ILInstructionType.Int32Parametered_Instructions)
                 res.IntArg = ReadInt32Parameter(true);
             else if (res.Type > ILInstructionType.Int8Parametered_Instructions)
                 res.IntArg = ReadInt8Parameter(true);
@@ -64,8 +66,25 @@ namespace ILVisualizer.Application.Common.Services
                 "ldc.i4.m1" => ILInstructionType.Ldc_I4_M1,
                 "ldc.i4.s" => ILInstructionType.Ldc_I4_S,
                 "ldc.i4" => ILInstructionType.Ldc_I4,
+                "ldc.i8" => ILInstructionType.Ldc_I8,
+                "ret" => ILInstructionType.Ret,
+                "add" => ILInstructionType.Add,
+                "sub" => ILInstructionType.Sub,
+                "mul" => ILInstructionType.Mul,
+                "div" => ILInstructionType.Div,
+                "rem" => ILInstructionType.Rem,
                 _ => throw new ParseFailedException($"Unrecognized instruction: {opCodeStr}")
             };
+        }
+
+        long ReadInt64Parameter(bool isLastParameter)
+        {
+            string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(' ');
+
+            if (!long.TryParse(parameterData, out long val))
+                throw new ParseFailedException($"Invalid Int64 number in parameter at position {_currentPos}");
+
+            return val;
         }
 
         int ReadInt32Parameter(bool isLastParameter)

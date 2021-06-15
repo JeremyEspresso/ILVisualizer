@@ -1,4 +1,4 @@
-﻿using ILVisualizer.Domain.Enums;
+using ILVisualizer.Domain.Enums;
 
 namespace ILVisualizer.Domain.Models
 {
@@ -6,5 +6,6 @@ namespace ILVisualizer.Domain.Models
     {
         public ILInstructionType Type;
         public int IntArg;
+        public long LongArg;
     }
 }

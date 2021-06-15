@@ -78,6 +78,25 @@ namespace ILVisualizer.UnitTests.Parsing
             Assert.True(expected.SequenceEqual(lst));
         }
 
+
+        [Fact]
+        public void Parse_OneInstruction_Int64Argument()
+        {
+            var parser = new ILParserService();
+            var lst = parser.Parse("ldc.i8 80000000000000");
+
+            var expected = new ILInstruction[]
+            {
+                new ILInstruction()
+                {
+                    Type = ILInstructionType.Ldc_I8,
+                    LongArg = 80000000000000
+                }
+            };
+
+            Assert.True(expected.SequenceEqual(lst));
+        }
+
         [Fact]
         public void Parse_OneInstruction_Int32Argument_InvalidContents()
         {

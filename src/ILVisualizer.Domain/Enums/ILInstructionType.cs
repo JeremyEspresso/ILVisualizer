@@ -2,7 +2,8 @@
 {
     public enum ILInstructionType
     {
-        // Parameterless
+        // Parameterless - Constants
+        Ldc_I4_M1 = -1,
         Ldc_I4_0 = 0,
         Ldc_I4_1 = 1,
         Ldc_I4_2 = 2,
@@ -12,14 +13,27 @@
         Ldc_I4_6 = 6,
         Ldc_I4_7 = 7,
         Ldc_I4_8 = 8,
-        Ldc_I4_M1 = -1,
+
+        // Parameterless - Basic maths operators
+        Add = 32,
+        Sub = 33,
+        Mul = 34,
+        Div = 35,
+        Rem = 36,
+
+        // Parameterless - Control flow
+        Ret = 64,
 
         // One single "Int8" parameter
-        Int8Parametered_Instructions = 9,
-        Ldc_I4_S = 10,
+        Int8Parametered_Instructions = 8192,
+        Ldc_I4_S = 8193,
 
         // One single "Int32" parameter
-        Int32Parametered_Instructions = 11,
-        Ldc_I4 = 12
+        Int32Parametered_Instructions = 16384,
+        Ldc_I4 = 16385,
+
+        // One single "Int64" parameter
+        Int64Parametered_Instructions = 32768,
+        Ldc_I8 = 32769,
     }
 }
