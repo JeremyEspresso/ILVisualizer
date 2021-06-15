@@ -47,7 +47,7 @@ namespace ILVisualizer.Application.Common.Services
             // Parse the operands (parameters)
             if (res.Type > ILInstructionType.Int64Parametered_Instructions)
                 res.LongArg = ReadInt64Parameter(true);
-            if (res.Type > ILInstructionType.Int32Parametered_Instructions)
+            else if (res.Type > ILInstructionType.Int32Parametered_Instructions)
                 res.IntArg = ReadInt32Parameter(true);
             else if (res.Type > ILInstructionType.Int8Parametered_Instructions)
                 res.IntArg = ReadInt8Parameter(true);

@@ -24,13 +24,13 @@ namespace ILVisualizer.Application.Common.Services
 
             for (int i = 0; i < instructions.Count; i++)
             {
+                if (CurrentEvalStack.Count == 0)
+                    InsertStatementBreak(i);
+
                 CurrentStep = new Step();
                 ProcessInstruction(instructions[i]);
 
                 Result.Steps.Add(CurrentStep);
-
-                if (CurrentEvalStack.Count == 0)
-                    InsertStatementBreak();
             }
 
             return Result;
@@ -78,9 +78,9 @@ namespace ILVisualizer.Application.Common.Services
             }
         }
 
-        void InsertStatementBreak()
+        void InsertStatementBreak(int i)
         {
-            Result.Breaks.Add(new StatementBreak(Result.Steps.Count));
+            Result.Breaks.Add(new StatementBreak(i));
         }
 
         EvalStackItem Pop()

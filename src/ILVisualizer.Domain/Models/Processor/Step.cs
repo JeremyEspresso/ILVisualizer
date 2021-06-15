@@ -32,10 +32,15 @@ namespace ILVisualizer.Domain.Models.Processor
                 if (ItemsPopped != step.ItemsPopped) return false;
                 if (HasMultiplePushed != step.HasMultiplePushed) return false;
 
-                if (HasMultiplePushed && !MultiplePushed.SequenceEqual(step.MultiplePushed)) return false;
-                if (!HasMultiplePushed && !SinglePushed.Equals(step.SinglePushed)) return false;
-
-                return true;
+                if (HasMultiplePushed)                
+                    return MultiplePushed.SequenceEqual(step.MultiplePushed);
+                else
+                {
+                    if (SinglePushed == null)                    
+                        return MultiplePushed == null;
+                    else
+                        return SinglePushed.Equals(step.SinglePushed);
+                }
             }
 
             return false;
