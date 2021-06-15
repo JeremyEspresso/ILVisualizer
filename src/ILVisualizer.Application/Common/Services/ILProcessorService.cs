@@ -1,4 +1,5 @@
-﻿using ILVisualizer.Domain.Enums;
+﻿using ILVisualizer.Application.Common.Exceptions.Processor;
+using ILVisualizer.Domain.Enums;
 using ILVisualizer.Domain.Models;
 using ILVisualizer.Domain.Models.EvalStack;
 using ILVisualizer.Domain.Models.Processor;
@@ -61,6 +62,9 @@ namespace ILVisualizer.Application.Common.Services
                 case ILInstructionType.Ldc_I4:
                     PushOne(new Int32ConstantEvalStackItem(instruction.IntArg));
                     break;
+                case ILInstructionType.Ldc_I8:
+                    PushOne(new Int64ConstantEvalStackItem(instruction.LongArg));
+                    break;
                 case ILInstructionType.Add:
                 case ILInstructionType.Sub:
                 case ILInstructionType.Mul:
@@ -81,9 +85,9 @@ namespace ILVisualizer.Application.Common.Services
 
         EvalStackItem Pop()
         {
+            if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
             CurrentStep.ItemsPopped++;
 
-            var item = CurrentEvalStack.Pop();
             item.PoppedStepNo = (ushort)Result.Steps.Count;
             return item;
         }
