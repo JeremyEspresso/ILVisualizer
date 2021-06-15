@@ -4,7 +4,6 @@ using ILVisualizer.Application.DependencyInjection;
 using System;
 using Finite.Commands;
 using Finite.Commands.Parsing;
-using ILVisualizer.Application.Common.Services;
 using ILVisualizer.Bot.Responders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,9 +31,6 @@ namespace ILVisualizer.Bot.DependencyInjection
 
 				services.AddSingleton(applicationConfig);
 				services.AddApplication();
-
-				services.AddScoped<IILParserService, ILParserService>();
-				services.AddScoped<IILProcessorService, ILProcessorService>();
 
 				services.Configure<HostOptions>(x => x.ShutdownTimeout = TimeSpan.Zero);
 				services.AddCommands()
