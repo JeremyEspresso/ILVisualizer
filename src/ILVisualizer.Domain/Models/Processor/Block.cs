@@ -13,6 +13,7 @@
 
 		/// <summary>
 		/// The index of the first "action instruction" present.
+		/// (-1 represents none)
 		/// </summary>
 		public int FirstActionInstructionPos;
     }

@@ -11,36 +11,34 @@ namespace ILVisualizer.Application.Common.Services
 {
     public class ILProcessorService : IILProcessorService
 	{
-        public Step CurrentStep = new();
+		public Block CurrentBlock;
+		public List<Block> Result = new(8);
 
-        public ProcessorResult Result = new();
+		public List<Step> CurrentSteps = new(8);
+        public Step CurrentStep = new();
         public Stack<EvalStackItem> CurrentEvalStack = new();
 
-        public ProcessorResult Process(IList<ParsedILInstruction> instructions)
+        public IList<Block> Process(IList<ParsedILInstruction> instructions)
         {
             Initialize();
 
             for (int i = 0; i < instructions.Count; i++)
             {
-                if (CurrentEvalStack.Count == 0)
-                    InsertStatementBreak(i);
-
                 CurrentStep = new Step();
                 ProcessInstruction(instructions[i]);
 
-                Result.Steps.Add(CurrentStep);
-            }
+                CurrentSteps.Add(CurrentStep);
 
-            return Result;
+				if (CurrentEvalStack.Count == 0)
+					FinishCurrentBlock();
+			}
+
+			return Result;
         }
 
-        void Initialize()
-        {
-            Result.Steps = new List<Step>();
-            Result.Breaks = new List<Block>();
-        }
+		void Initialize() => CurrentSteps = new List<Step>();
 
-        void ProcessInstruction(ParsedILInstruction instruction)
+		void ProcessInstruction(ParsedILInstruction instruction)
         {
             switch (instruction.Type)
             {
@@ -58,7 +56,7 @@ namespace ILVisualizer.Application.Common.Services
                     break;
                 case ILInstructionType.Ldc_I4_S:
                 case ILInstructionType.Ldc_I4:
-                    PushOne(new Int32ConstantEvalStackItem(instruction.IntArg));
+                    PushOne(new Int32ConstantEvalStackItem((int)instruction.Arg));
                     break;
                 case ILInstructionType.Ldc_I8:
                     PushOne(new Int64ConstantEvalStackItem(instruction.Arg));
@@ -71,21 +69,26 @@ namespace ILVisualizer.Application.Common.Services
                     PerformOperation((EvalStackOperatorType)(instruction.Type - ILInstructionType.Add));
                     break;
                 case ILInstructionType.Ret:
-                    Pop();
+					_ = Pop();
                     break;
             }
         }
+		void SetupNewBlock() => CurrentBlock = new Block();
 
-        void InsertStatementBreak(int i)
+        void FinishCurrentBlock()
         {
-            Result.Breaks.Add(new Block(i));
+			CurrentBlock.Instructions = CurrentSteps.ToArray();
+			Result.Add(CurrentBlock);
+			SetupNewBlock();
         }
 
-        EvalStackItem Pop()
+		void MarkAsActionInstruction() => CurrentStep.IsActionInstruction = true;
+
+		EvalStackItem Pop()
         {
             if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
 
-            item.PoppedStepNo = (ushort)Result.Steps.Count;
+			if (CurrentStep.IsActionInstruction) item.PoppedByActionStepsCounts++;
             return item;
         }
 
@@ -93,7 +96,7 @@ namespace ILVisualizer.Application.Common.Services
         {
             var popped = new EvalStackItem[count];
 
-            for (int i = popped.Length - 1; i >= 0; i--)
+			for (int i = popped.Length - 1; i >= 0; i--)
 			{
                 if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
                 popped[i] = item;
