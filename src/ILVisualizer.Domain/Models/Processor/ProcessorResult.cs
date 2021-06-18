@@ -5,6 +5,6 @@ namespace ILVisualizer.Domain.Models.Processor
     public struct ProcessorResult
     {
         public IList<Step> Steps;
-        public IList<StatementBreak> Breaks;
+        public IList<Block> Breaks;
     }
 }

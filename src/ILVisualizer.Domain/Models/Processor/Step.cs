@@ -1,4 +1,5 @@
-﻿using ILVisualizer.Domain.Models.EvalStack;
+﻿using ILVisualizer.Domain.Enums;
+using ILVisualizer.Domain.Models.EvalStack;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -6,6 +7,13 @@ namespace ILVisualizer.Domain.Models.Processor
 {
     public struct Step
     {
+        public ILInstructionType Type;
+
+        /// <summary>
+		/// Whether this is an instruction that performs an action (has side effects beyond the eval stack).
+		/// </summary>
+        public bool IsActionInstruction;
+
         public EvalStackItem Pushed;
 
         // EvalStackItem[] when multiple are popped, EvalStackItem when one is popped.

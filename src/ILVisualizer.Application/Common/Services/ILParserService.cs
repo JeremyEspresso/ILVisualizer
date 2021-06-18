@@ -11,9 +11,9 @@ namespace ILVisualizer.Application.Common.Services
     {
 	    const char Space = ' ';
 
-		List<ILInstruction> _destination = new();
+		List<ParsedILInstruction> _destination = new();
 
-        public IList<ILInstruction> Parse(string str)
+        public IList<ParsedILInstruction> Parse(string str)
         {
             Initialize(str);
 
@@ -33,9 +33,9 @@ namespace ILVisualizer.Application.Common.Services
 
         public void AddInstruction() => _destination.Add(ParseInstruction());
 
-        public ILInstruction ParseInstruction()
+        public ParsedILInstruction ParseInstruction()
         {
-            var res = new ILInstruction();
+            var res = new ParsedILInstruction();
 
             // Parse the opcode
             string opCodeStr = ReadToLineEndOrToChar(' ').ToLower();
@@ -43,7 +43,7 @@ namespace ILVisualizer.Application.Common.Services
 
             // Parse the operands (parameters)
             if (res.Type > ILInstructionType.Int64Parametered_Instructions)
-                res.LongArg = ReadInt64Parameter(true);
+                res.Arg = ReadInt64Parameter(true);
             else if (res.Type > ILInstructionType.Int32Parametered_Instructions)
                 res.IntArg = ReadInt32Parameter(true);
             else if (res.Type > ILInstructionType.Int8Parametered_Instructions)

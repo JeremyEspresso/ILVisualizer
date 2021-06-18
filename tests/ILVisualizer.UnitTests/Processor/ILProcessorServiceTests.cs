@@ -20,9 +20,9 @@ namespace ILVisualizer.UnitTests.Processor
         public void Process_SinglePush()
         {
             var service = new ILProcessorService();
-            var result = service.Process(new List<ILInstruction>
+            var result = service.Process(new List<ParsedILInstruction>
             {
-                new ILInstruction() 
+                new ParsedILInstruction() 
                 {
                     Type = ILInstructionType.Ldc_I4, 
                     IntArg = 13
@@ -40,7 +40,7 @@ namespace ILVisualizer.UnitTests.Processor
             };
 
             CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new StatementBreak[] { new StatementBreak(0) }, result.Breaks);
+            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
         }
 
         [Fact]
@@ -48,16 +48,16 @@ namespace ILVisualizer.UnitTests.Processor
         {
             var service = new ILProcessorService();
 
-            var result = service.Process(new List<ILInstruction>
+            var result = service.Process(new List<ParsedILInstruction>
             {
                 // Push
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_2
                 },
 
                 // Pop
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ret
                 }
@@ -82,7 +82,7 @@ namespace ILVisualizer.UnitTests.Processor
             };
 
             CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new StatementBreak[] { new StatementBreak(0) }, result.Breaks);
+            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
         }
 
         [Fact]
@@ -90,20 +90,20 @@ namespace ILVisualizer.UnitTests.Processor
         {
             var service = new ILProcessorService();
 
-            var result = service.Process(new List<ILInstruction>
+            var result = service.Process(new List<ParsedILInstruction>
             {
                 // Setup
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_2
                 },
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_5
                 },
 
                 // The instruction
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Add
                 }
@@ -138,7 +138,7 @@ namespace ILVisualizer.UnitTests.Processor
             };
 
             CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new StatementBreak[] { new StatementBreak(0) }, result.Breaks);
+            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
         }
 
         [Fact]
@@ -146,21 +146,21 @@ namespace ILVisualizer.UnitTests.Processor
         {
             var service = new ILProcessorService();
 
-            var result = service.Process(new List<ILInstruction>
+            var result = service.Process(new List<ParsedILInstruction>
             {
                 // Setup
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I8,
-                    LongArg = 80000000000000
+                    Arg = 80000000000000
                 },
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_5
                 },
 
                 // The instruction
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Add
                 }
@@ -195,7 +195,7 @@ namespace ILVisualizer.UnitTests.Processor
             };
 
             CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new StatementBreak[] { new StatementBreak(0) }, result.Breaks);
+            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
         }
 
         [Fact]
@@ -203,21 +203,21 @@ namespace ILVisualizer.UnitTests.Processor
         {
             var service = new ILProcessorService();
 
-            var result = service.Process(new List<ILInstruction>
+            var result = service.Process(new List<ParsedILInstruction>
             {
                 // Setup
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_7
                 },
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I8,
-                    LongArg = 80000000000000
+                    Arg = 80000000000000
                 },
 
                 // The instruction
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Add
                 }
@@ -252,7 +252,7 @@ namespace ILVisualizer.UnitTests.Processor
             };
 
             CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new StatementBreak[] { new StatementBreak(0) }, result.Breaks);
+            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
         }
 
         [Fact]
@@ -260,22 +260,22 @@ namespace ILVisualizer.UnitTests.Processor
         {
             var service = new ILProcessorService();
 
-            var result = service.Process(new List<ILInstruction>
+            var result = service.Process(new List<ParsedILInstruction>
             {
                 // Setup
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I8,
-                    LongArg = 13
+                    Arg = 13
                 },
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I8,
-                    LongArg = 80000000000000
+                    Arg = 80000000000000
                 },
 
                 // The instruction
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Add
                 }
@@ -310,16 +310,16 @@ namespace ILVisualizer.UnitTests.Processor
             };
 
             CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new StatementBreak[] { new StatementBreak(0) }, result.Breaks);
+            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
         }
 
         [Fact]
         public void Process_InvalidPop()
         {
             var service = new ILProcessorService();
-            Assert.Throws<InvalidPopException>(() => service.Process(new List<ILInstruction>()
+            Assert.Throws<InvalidPopException>(() => service.Process(new List<ParsedILInstruction>()
             {
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ret
                 }
@@ -330,13 +330,13 @@ namespace ILVisualizer.UnitTests.Processor
         public void Process_MultipleInstructions_AllPushing()
         {
             var service = new ILProcessorService();
-            var result = service.Process(new List<ILInstruction>
+            var result = service.Process(new List<ParsedILInstruction>
             {
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_2
                 },
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_5                    
                 }
@@ -359,7 +359,7 @@ namespace ILVisualizer.UnitTests.Processor
             };
 
             CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new StatementBreak[] { new StatementBreak(0) }, result.Breaks);
+            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
         }
     }
 }

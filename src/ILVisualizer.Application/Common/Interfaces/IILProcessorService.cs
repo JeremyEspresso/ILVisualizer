@@ -6,6 +6,6 @@ namespace ILVisualizer.Application.Common.Interfaces
 {
 	public interface IILProcessorService
 	{
-		ProcessorResult Process(IList<ILInstruction> instructions);
+		ProcessorResult Process(IList<ParsedILInstruction> instructions);
 	}
 }

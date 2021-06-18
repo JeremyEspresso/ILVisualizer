@@ -17,9 +17,9 @@ namespace ILVisualizer.UnitTests.Parsing
             var parser = new ILParserService();
             var lst = parser.Parse("ldc.i4.1");
 
-            var expected = new ILInstruction[] 
+            var expected = new ParsedILInstruction[] 
             { 
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_1
                 }
@@ -34,9 +34,9 @@ namespace ILVisualizer.UnitTests.Parsing
             var parser = new ILParserService();
             var lst = parser.Parse("ldc.i4.s 4");
 
-            var expected = new ILInstruction[]
+            var expected = new ParsedILInstruction[]
             {
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_S,
                     IntArg = 4
@@ -66,9 +66,9 @@ namespace ILVisualizer.UnitTests.Parsing
             var parser = new ILParserService();
             var lst = parser.Parse("ldc.i4 572");
 
-            var expected = new ILInstruction[]
+            var expected = new ParsedILInstruction[]
             {
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4,
                     IntArg = 572
@@ -85,12 +85,12 @@ namespace ILVisualizer.UnitTests.Parsing
             var parser = new ILParserService();
             var lst = parser.Parse("ldc.i8 80000000000000");
 
-            var expected = new ILInstruction[]
+            var expected = new ParsedILInstruction[]
             {
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I8,
-                    LongArg = 80000000000000
+                    Arg = 80000000000000
                 }
             };
 
@@ -113,23 +113,23 @@ ldc.i4.s 7
 ldc.i4 567
 ldc.i4.m1");
 
-            var expected = new ILInstruction[]
+            var expected = new ParsedILInstruction[]
             {
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_2
                 },
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_S,
                     IntArg = 7
                 },
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4,
                     IntArg = 567
                 },
-                new ILInstruction()
+                new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_M1
                 }

@@ -16,7 +16,7 @@ namespace ILVisualizer.Application.Common.Services
         public ProcessorResult Result = new();
         public Stack<EvalStackItem> CurrentEvalStack = new();
 
-        public ProcessorResult Process(IList<ILInstruction> instructions)
+        public ProcessorResult Process(IList<ParsedILInstruction> instructions)
         {
             Initialize();
 
@@ -37,10 +37,10 @@ namespace ILVisualizer.Application.Common.Services
         void Initialize()
         {
             Result.Steps = new List<Step>();
-            Result.Breaks = new List<StatementBreak>();
+            Result.Breaks = new List<Block>();
         }
 
-        void ProcessInstruction(ILInstruction instruction)
+        void ProcessInstruction(ParsedILInstruction instruction)
         {
             switch (instruction.Type)
             {
@@ -61,7 +61,7 @@ namespace ILVisualizer.Application.Common.Services
                     PushOne(new Int32ConstantEvalStackItem(instruction.IntArg));
                     break;
                 case ILInstructionType.Ldc_I8:
-                    PushOne(new Int64ConstantEvalStackItem(instruction.LongArg));
+                    PushOne(new Int64ConstantEvalStackItem(instruction.Arg));
                     break;
                 case ILInstructionType.Add:
                 case ILInstructionType.Sub:
@@ -78,7 +78,7 @@ namespace ILVisualizer.Application.Common.Services
 
         void InsertStatementBreak(int i)
         {
-            Result.Breaks.Add(new StatementBreak(i));
+            Result.Breaks.Add(new Block(i));
         }
 
         EvalStackItem Pop()
