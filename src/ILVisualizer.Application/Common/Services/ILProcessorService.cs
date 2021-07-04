@@ -101,36 +101,9 @@ namespace ILVisualizer.Application.Common.Services
 				CurrentBlock.FirstActionInstructionPos = CurrentSteps.Count;
 		}
 
-		EvalStackItem Pop()
-        {
-            if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
-			CurrentStep.Popped = item;
+		#region Operator Handling
 
-			if (CurrentStep.IsActionInstruction) item.PoppedByActionStepsCounts++;
-            return item;
-        }
-
-        EvalStackItem[] PopMany(int count)
-        {
-            var popped = new EvalStackItem[count];
-
-			for (int i = popped.Length - 1; i >= 0; i--)
-			{
-                if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
-                popped[i] = item;
-            }
-
-			CurrentStep.Popped = popped;
-			return popped;
-        }
-
-        void PushOne(EvalStackItem item)
-        {
-            CurrentEvalStack.Push(item);
-            CurrentStep.Pushed = item;
-        }
-
-        enum FoldMode
+		enum FoldMode
         {
             None,
             Int32,
@@ -147,35 +120,25 @@ namespace ILVisualizer.Application.Common.Services
             // (e.g. 3 + 4 can become 7)
             var mode = GetFoldMode();
 
-            if (mode == FoldMode.Int32)
-            {
-                var firstConstant = GetConstantValueInt(first);
-                var secondConstant = GetConstantValueInt(second);
+			EvalStackItem toPush = mode switch
+			{
+				FoldMode.Int32 => Fold32(GetConstantValueInt(first), GetConstantValueInt(second)),
+				FoldMode.Int64 => Fold64(GetConstantValueLong(first), GetConstantValueLong(second)),
+				_ => new OperatorEvalStackItem(opType, first, second)
+			};
 
-                PushOne(Fold32(firstConstant, secondConstant));
-            }
-            else if (mode == FoldMode.Int64)
-            {
-                var firstConstant = GetConstantValueLong(first);
-                var secondConstant = GetConstantValueLong(second);
-
-                PushOne(Fold64(firstConstant, secondConstant));
-            }
-            else
-            {
-                PushOne(new OperatorEvalStackItem(opType, first, second));
-            }
+			PushOne(toPush);
 
             FoldMode GetFoldMode()
             {
-                if (first is Int32ConstantEvalStackItem first32)
+                if (first is Int32ConstantEvalStackItem)
                 {
                     if (second is Int32ConstantEvalStackItem)
                         return FoldMode.Int32;
                     else if (second is Int64ConstantEvalStackItem)
                         return FoldMode.Int64;
                 }
-                else if (first is Int64ConstantEvalStackItem first64)
+                else if (first is Int64ConstantEvalStackItem)
                 {
                     if (second is Int32ConstantEvalStackItem or Int64ConstantEvalStackItem)
                         return FoldMode.Int64;
@@ -215,10 +178,41 @@ namespace ILVisualizer.Application.Common.Services
             }
         }
 
-        public int GetConstantValueInt(EvalStackItem item) =>
-            ((Int32ConstantEvalStackItem)item).Value;
+		public static int GetConstantValueInt(EvalStackItem item) =>
+			((Int32ConstantEvalStackItem)item).Value;
 
-        public long GetConstantValueLong(EvalStackItem item) =>
-            item is Int32ConstantEvalStackItem item32 ? item32.Value : ((Int64ConstantEvalStackItem)item).Value;
+		public static long GetConstantValueLong(EvalStackItem item) =>
+			item is Int32ConstantEvalStackItem item32 ? item32.Value : ((Int64ConstantEvalStackItem)item).Value;
+
+		#endregion
+
+		EvalStackItem Pop()
+		{
+			if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
+			CurrentStep.Popped = item;
+
+			if (CurrentStep.IsActionInstruction) item.PoppedByActionStepsCounts++;
+			return item;
+		}
+
+		EvalStackItem[] PopMany(int count)
+		{
+			var popped = new EvalStackItem[count];
+
+			for (int i = popped.Length - 1; i >= 0; i--)
+			{
+				if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
+				popped[i] = item;
+			}
+
+			CurrentStep.Popped = popped;
+			return popped;
+		}
+
+		void PushOne(EvalStackItem item)
+		{
+			CurrentEvalStack.Push(item);
+			CurrentStep.Pushed = item;
+		}
     }
 }
