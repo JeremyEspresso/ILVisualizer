@@ -11,37 +11,44 @@ namespace ILVisualizer.Application.Common.Services
 {
     public class ILProcessorService : IILProcessorService
 	{
-        public Step CurrentStep = new();
+		public Block CurrentBlock;
+		public List<Block> Result = new(8);
 
-        public ProcessorResult Result = new();
+		public List<Step> CurrentSteps = new(8);
+        public Step CurrentStep = new();
         public Stack<EvalStackItem> CurrentEvalStack = new();
 
-        public ProcessorResult Process(IList<ILInstruction> instructions)
+        public IList<Block> Process(IList<ParsedILInstruction> instructions)
         {
             Initialize();
 
             for (int i = 0; i < instructions.Count; i++)
             {
-                if (CurrentEvalStack.Count == 0)
-                    InsertStatementBreak(i);
-
                 CurrentStep = new Step();
                 ProcessInstruction(instructions[i]);
 
-                Result.Steps.Add(CurrentStep);
-            }
+                CurrentSteps.Add(CurrentStep);
 
-            return Result;
+				if (CurrentEvalStack.Count == 0)
+					FinishCurrentBlock();
+			}
+
+			// End the current block if there is one.
+			if (CurrentSteps.Count > 0) FinishCurrentBlock();
+
+			return Result;
         }
 
-        void Initialize()
-        {
-            Result.Steps = new List<Step>();
-            Result.Breaks = new List<StatementBreak>();
-        }
+		void Initialize()
+		{
+			CurrentSteps = new List<Step>();
+			SetupNewBlock();
+		}
 
-        void ProcessInstruction(ILInstruction instruction)
+		void ProcessInstruction(ParsedILInstruction instruction)
         {
+			CurrentStep.InstructionType = instruction.Type;
+
             switch (instruction.Type)
             {
                 case ILInstructionType.Ldc_I4_M1:
@@ -58,10 +65,10 @@ namespace ILVisualizer.Application.Common.Services
                     break;
                 case ILInstructionType.Ldc_I4_S:
                 case ILInstructionType.Ldc_I4:
-                    PushOne(new Int32ConstantEvalStackItem(instruction.IntArg));
+                    PushOne(new Int32ConstantEvalStackItem((int)instruction.Arg));
                     break;
                 case ILInstructionType.Ldc_I8:
-                    PushOne(new Int64ConstantEvalStackItem(instruction.LongArg));
+                    PushOne(new Int64ConstantEvalStackItem(instruction.Arg));
                     break;
                 case ILInstructionType.Add:
                 case ILInstructionType.Sub:
@@ -71,44 +78,32 @@ namespace ILVisualizer.Application.Common.Services
                     PerformOperation((EvalStackOperatorType)(instruction.Type - ILInstructionType.Add));
                     break;
                 case ILInstructionType.Ret:
-                    Pop();
+					MarkAsActionInstruction();
+					_ = Pop();
                     break;
             }
         }
 
-        void InsertStatementBreak(int i)
+		void SetupNewBlock() => CurrentBlock = new Block() { FirstActionInstructionPos = -1 };
+
+        void FinishCurrentBlock()
         {
-            Result.Breaks.Add(new StatementBreak(i));
+			CurrentBlock.Instructions = CurrentSteps.ToArray();
+			CurrentSteps.Clear();
+			Result.Add(CurrentBlock);
+			SetupNewBlock();
         }
 
-        EvalStackItem Pop()
-        {
-            if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
-            CurrentStep.ItemsPopped++;
+		void MarkAsActionInstruction()
+		{
+			CurrentStep.IsActionInstruction = true;
+			if (CurrentBlock.FirstActionInstructionPos == -1) 
+				CurrentBlock.FirstActionInstructionPos = CurrentSteps.Count;
+		}
 
-            item.PoppedStepNo = (ushort)Result.Steps.Count;
-            return item;
-        }
+		#region Operator Handling
 
-        void PushOne(EvalStackItem item)
-        {
-            CurrentEvalStack.Push(item);
-
-            CurrentStep.SinglePushed = item;
-        }
-
-        void PushMany(EvalStackItem[] item)
-        {
-            // Push to the current step.
-            CurrentStep.HasMultiplePushed = true;
-            CurrentStep.MultiplePushed = item;
-
-            // Push to the curreneval stack.
-            for (int i = 0; i < item.Length; i++)
-                CurrentEvalStack.Push(item[i]);
-        }
-
-        enum FoldMode
+		enum FoldMode
         {
             None,
             Int32,
@@ -117,42 +112,33 @@ namespace ILVisualizer.Application.Common.Services
 
         void PerformOperation(EvalStackOperatorType opType)
         {
-            var second = Pop();
-            var first = Pop();
+            var parts = PopMany(2);
+            var first = parts[0];
+            var second = parts[1];
 
             // Try to do any constant folding if both the first and second are constants.
             // (e.g. 3 + 4 can become 7)
             var mode = GetFoldMode();
 
-            if (mode == FoldMode.Int32)
-            {
-                var firstConstant = GetConstantValueInt(first);
-                var secondConstant = GetConstantValueInt(second);
+			EvalStackItem toPush = mode switch
+			{
+				FoldMode.Int32 => Fold32(GetConstantValueInt(first), GetConstantValueInt(second)),
+				FoldMode.Int64 => Fold64(GetConstantValueLong(first), GetConstantValueLong(second)),
+				_ => new OperatorEvalStackItem(opType, first, second)
+			};
 
-                PushOne(Fold32(firstConstant, secondConstant));
-            }
-            else if (mode == FoldMode.Int64)
-            {
-                var firstConstant = GetConstantValueLong(first);
-                var secondConstant = GetConstantValueLong(second);
-
-                PushOne(Fold64(firstConstant, secondConstant));
-            }
-            else
-            {
-                PushOne(new OperatorEvalStackItem(opType, first, second));
-            }
+			PushOne(toPush);
 
             FoldMode GetFoldMode()
             {
-                if (first is Int32ConstantEvalStackItem first32)
+                if (first is Int32ConstantEvalStackItem)
                 {
                     if (second is Int32ConstantEvalStackItem)
                         return FoldMode.Int32;
                     else if (second is Int64ConstantEvalStackItem)
                         return FoldMode.Int64;
                 }
-                else if (first is Int64ConstantEvalStackItem first64)
+                else if (first is Int64ConstantEvalStackItem)
                 {
                     if (second is Int32ConstantEvalStackItem or Int64ConstantEvalStackItem)
                         return FoldMode.Int64;
@@ -192,10 +178,41 @@ namespace ILVisualizer.Application.Common.Services
             }
         }
 
-        public int GetConstantValueInt(EvalStackItem item) =>
-            ((Int32ConstantEvalStackItem)item).Value;
+		public static int GetConstantValueInt(EvalStackItem item) =>
+			((Int32ConstantEvalStackItem)item).Value;
 
-        public long GetConstantValueLong(EvalStackItem item) =>
-            item is Int32ConstantEvalStackItem item32 ? item32.Value : ((Int64ConstantEvalStackItem)item).Value;
+		public static long GetConstantValueLong(EvalStackItem item) =>
+			item is Int32ConstantEvalStackItem item32 ? item32.Value : ((Int64ConstantEvalStackItem)item).Value;
+
+		#endregion
+
+		EvalStackItem Pop()
+		{
+			if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
+			CurrentStep.Popped = item;
+
+			if (CurrentStep.IsActionInstruction) item.PoppedByActionStepsCounts++;
+			return item;
+		}
+
+		EvalStackItem[] PopMany(int count)
+		{
+			var popped = new EvalStackItem[count];
+
+			for (int i = popped.Length - 1; i >= 0; i--)
+			{
+				if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
+				popped[i] = item;
+			}
+
+			CurrentStep.Popped = popped;
+			return popped;
+		}
+
+		void PushOne(EvalStackItem item)
+		{
+			CurrentEvalStack.Push(item);
+			CurrentStep.Pushed = item;
+		}
     }
 }

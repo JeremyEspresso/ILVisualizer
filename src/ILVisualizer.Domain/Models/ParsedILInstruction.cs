@@ -2,10 +2,9 @@ using ILVisualizer.Domain.Enums;
 
 namespace ILVisualizer.Domain.Models
 {
-    public struct ILInstruction
+    public struct ParsedILInstruction
     {
         public ILInstructionType Type;
-        public int IntArg;
-        public long LongArg;
+        public long Arg;
     }
 }

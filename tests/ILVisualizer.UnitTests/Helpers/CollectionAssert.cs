@@ -26,10 +26,7 @@ namespace ILVisualizer.UnitTests.Helpers
                 }
             }
 
-            static void ThrowNoMatch(int i)
-            {
-                throw new Exception($"CollectionAssert.Equal failed: Index {i} doesn't match!");
-            }
-        }
+			static void ThrowNoMatch(int i) => throw new Exception($"CollectionAssert.Equal failed: Index {i} doesn't match!");
+		}
     }
 }

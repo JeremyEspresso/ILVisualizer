@@ -5,6 +5,6 @@ namespace ILVisualizer.Application.Common.Interfaces
 {
     public interface IILParserService
     {
-        public IList<ILInstruction> Parse(string str);
+        public IList<ParsedILInstruction> Parse(string str);
     }
 }
