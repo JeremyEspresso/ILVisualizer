@@ -25,26 +25,27 @@ namespace ILVisualizer.UnitTests.Processor
                 new ParsedILInstruction() 
                 {
                     Type = ILInstructionType.Ldc_I4, 
-                    IntArg = 13
+                    Arg = 13
                 }
             });
 
-            var expectedSteps = new Step[]
+            var expected = new Block[]
             {
-                new Step() 
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int32ConstantEvalStackItem(13),
-                }
+				new Block()
+				{
+					FirstActionInstructionPos = -1,
+					Instructions = new Step[]
+					{
+						new Step(ILInstructionType.Ldc_I4, new Int32ConstantEvalStackItem(13), null, false)						
+					}
+				}
             };
 
-            CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
+            CollectionAssert.Equal(expected, result);
         }
 
         [Fact]
-        public void Process_PushThenSinglePop()
+        public void Process_ActionInstruction()
         {
             var service = new ILProcessorService();
 
@@ -56,33 +57,32 @@ namespace ILVisualizer.UnitTests.Processor
                     Type = ILInstructionType.Ldc_I4_2
                 },
 
-                // Pop
+                // Action Instruction - Pop
                 new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ret
                 }
             });
 
-            var expectedSteps = new Step[]
+			var ldci42 = new Int32ConstantEvalStackItem(2)
+			{
+				PoppedByActionStepsCounts = 1
+			};
+
+			var expectedSteps = new Block[]
             {
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int32ConstantEvalStackItem(2)
-                    {
-                        PoppedStepNo = 1
-                    },
-                },
-                new Step()
-                {
-                    ItemsPopped = 1,
-                    HasMultiplePushed = false
-                }
+				new Block()
+				{
+					Instructions = new Step[]
+					{
+						new Step(ILInstructionType.Ldc_I4_2, ldci42, null, false),
+						new Step(ILInstructionType.Ret, null, ldci42, true)
+					},
+					FirstActionInstructionPos = 1
+				}
             };
 
-            CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
+            CollectionAssert.Equal(expectedSteps, result);
         }
 
         [Fact]
@@ -109,36 +109,30 @@ namespace ILVisualizer.UnitTests.Processor
                 }
             });
 
-            var expectedSteps = new Step[]
-            {
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int32ConstantEvalStackItem(2)
-                    {
-                        PoppedStepNo = 2
-                    },
-                },
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int32ConstantEvalStackItem(5)
-                    {
-                        PoppedStepNo = 2
-                    },
-                },
-                new Step()
-                {
-                    ItemsPopped = 2,
-                    HasMultiplePushed = false,
-                    Pushed = new Int32ConstantEvalStackItem(7)
-                }
+			var ldcI42 = new Int32ConstantEvalStackItem(2);
+			var ldcI45 = new Int32ConstantEvalStackItem(5);
+
+			var expectedSteps = new Block[]
+			{
+				new Block()
+				{
+					FirstActionInstructionPos = -1,
+					Instructions = new Step[]
+					{
+						new Step(ILInstructionType.Ldc_I4_2, ldcI42, null, false),
+						new Step(ILInstructionType.Ldc_I4_5, ldcI45, null, false),
+						new Step(ILInstructionType.Add, new Int32ConstantEvalStackItem(7), 
+							new EvalStackItem[]
+							{
+								ldcI42,
+								ldcI45
+							}, 
+						false)
+					}
+				}
             };
 
-            CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
+            CollectionAssert.Equal(expectedSteps, result);
         }
 
         [Fact]
@@ -166,36 +160,30 @@ namespace ILVisualizer.UnitTests.Processor
                 }
             });
 
-            var expectedSteps = new Step[]
+			var ldci8 = new Int64ConstantEvalStackItem(80000000000000);
+			var ldci45 = new Int32ConstantEvalStackItem(5);
+
+			var expectedSteps = new Block[]
             {
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int64ConstantEvalStackItem(80000000000000)
-                    {
-                        PoppedStepNo = 2
-                    },
-                },
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int32ConstantEvalStackItem(5)
-                    {
-                        PoppedStepNo = 2
-                    },
-                },
-                new Step()
-                {
-                    ItemsPopped = 2,
-                    HasMultiplePushed = false,
-                    Pushed = new Int64ConstantEvalStackItem(80000000000005)
-                }
+				new Block()
+				{
+					FirstActionInstructionPos = -1,
+					Instructions = new Step[]
+					{
+						new Step(ILInstructionType.Ldc_I8, ldci8, null, false),
+						new Step(ILInstructionType.Ldc_I4_5, ldci45, null, false),
+						new Step(ILInstructionType.Add, new Int64ConstantEvalStackItem(80000000000005),
+							new EvalStackItem[]
+							{
+								ldci8,
+								ldci45
+							},
+						false)						
+					}
+				}
             };
 
-            CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
+            CollectionAssert.Equal(expectedSteps, result);
         }
 
         [Fact]
@@ -223,36 +211,24 @@ namespace ILVisualizer.UnitTests.Processor
                 }
             });
 
-            var expectedSteps = new Step[]
+			var ldci47 = new Int32ConstantEvalStackItem(7);
+			var ldci8 = new Int64ConstantEvalStackItem(80000000000000);
+
+			var expectedSteps = new Block[]
             {
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int32ConstantEvalStackItem(7)
-                    {
-                        PoppedStepNo = 2
-                    },
-                },
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int64ConstantEvalStackItem(80000000000000)
-                    {
-                        PoppedStepNo = 2
-                    },
-                },
-                new Step()
-                {
-                    ItemsPopped = 2,
-                    HasMultiplePushed = false,
-                    Pushed = new Int64ConstantEvalStackItem(80000000000007)
-                }
+				new Block()
+				{
+					FirstActionInstructionPos = -1,
+					Instructions = new Step[]
+					{
+						new Step(ILInstructionType.Ldc_I4_7, ldci47, null, false),
+						new Step(ILInstructionType.Ldc_I8, ldci8, null, false),
+						new Step(ILInstructionType.Add, new Int64ConstantEvalStackItem(80000000000007), new EvalStackItem[] { ldci47, ldci8 }, false)
+					}
+				}    
             };
 
-            CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
+            CollectionAssert.Equal(expectedSteps, result);
         }
 
         [Fact]
@@ -281,85 +257,37 @@ namespace ILVisualizer.UnitTests.Processor
                 }
             });
 
-            var expectedSteps = new Step[]
-            {
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int64ConstantEvalStackItem(13)
-                    {
-                        PoppedStepNo = 2
-                    },
-                },
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int64ConstantEvalStackItem(80000000000000)
-                    {
-                        PoppedStepNo = 2
-                    },
-                },
-                new Step()
-                {
-                    ItemsPopped = 2,
-                    HasMultiplePushed = false,
-                    Pushed = new Int64ConstantEvalStackItem(80000000000013)
-                }
-            };
+			var ldci8 = new Int64ConstantEvalStackItem(13);
+			var ldci82 = new Int64ConstantEvalStackItem(80000000000000);
 
-            CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
+			var expectedSteps = new Block[]
+			{
+				new Block()
+				{
+					FirstActionInstructionPos = -1,
+					Instructions = new Step[]
+					{
+						new Step(ILInstructionType.Ldc_I8, ldci8, null, false),
+						new Step(ILInstructionType.Ldc_I8, ldci82, null, false),
+						new Step(ILInstructionType.Add, new Int64ConstantEvalStackItem(80000000000013), new EvalStackItem[] { ldci8, ldci82 }, false)
+					}
+				}
+			};
+
+            CollectionAssert.Equal(expectedSteps, result);
         }
 
         [Fact]
         public void Process_InvalidPop()
         {
             var service = new ILProcessorService();
-            Assert.Throws<InvalidPopException>(() => service.Process(new List<ParsedILInstruction>()
-            {
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ret
-                }
-            }));
-        }
-
-        [Fact]
-        public void Process_MultipleInstructions_AllPushing()
-        {
-            var service = new ILProcessorService();
-            var result = service.Process(new List<ParsedILInstruction>
-            {
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_2
-                },
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_5                    
-                }
-            });
-
-            var expectedSteps = new Step[]
-            {
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int32ConstantEvalStackItem(2),
-                },
-                new Step()
-                {
-                    ItemsPopped = 0,
-                    HasMultiplePushed = false,
-                    Pushed = new Int32ConstantEvalStackItem(5),
-                }
-            };
-
-            CollectionAssert.Equal(expectedSteps, result.Steps);
-            CollectionAssert.Equal(new Block[] { new Block(0) }, result.Breaks);
+			_ = Assert.Throws<InvalidPopException>(() => service.Process(new List<ParsedILInstruction>()
+			{
+				new ParsedILInstruction()
+				{
+					Type = ILInstructionType.Ret
+				}
+			}));
         }
     }
 }

@@ -39,7 +39,7 @@ namespace ILVisualizer.UnitTests.Parsing
                 new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_S,
-                    IntArg = 4
+                    Arg = 4
                 }
             };
 
@@ -71,13 +71,12 @@ namespace ILVisualizer.UnitTests.Parsing
                 new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4,
-                    IntArg = 572
+                    Arg = 572
                 }
             };
 
             Assert.True(expected.SequenceEqual(lst));
         }
-
 
         [Fact]
         public void Parse_OneInstruction_Int64Argument()
@@ -122,12 +121,12 @@ ldc.i4.m1");
                 new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4_S,
-                    IntArg = 7
+                    Arg = 7
                 },
                 new ParsedILInstruction()
                 {
                     Type = ILInstructionType.Ldc_I4,
-                    IntArg = 567
+                    Arg = 567
                 },
                 new ParsedILInstruction()
                 {
@@ -137,6 +136,5 @@ ldc.i4.m1");
 
             Assert.True(expected.SequenceEqual(lst));
         }
-
     }
 }

@@ -33,13 +33,22 @@ namespace ILVisualizer.Application.Common.Services
 					FinishCurrentBlock();
 			}
 
+			// End the current block if there is one.
+			if (CurrentSteps.Count > 0) FinishCurrentBlock();
+
 			return Result;
         }
 
-		void Initialize() => CurrentSteps = new List<Step>();
+		void Initialize()
+		{
+			CurrentSteps = new List<Step>();
+			SetupNewBlock();
+		}
 
 		void ProcessInstruction(ParsedILInstruction instruction)
         {
+			CurrentStep.InstructionType = instruction.Type;
+
             switch (instruction.Type)
             {
                 case ILInstructionType.Ldc_I4_M1:
@@ -69,24 +78,33 @@ namespace ILVisualizer.Application.Common.Services
                     PerformOperation((EvalStackOperatorType)(instruction.Type - ILInstructionType.Add));
                     break;
                 case ILInstructionType.Ret:
+					MarkAsActionInstruction();
 					_ = Pop();
                     break;
             }
         }
-		void SetupNewBlock() => CurrentBlock = new Block();
+
+		void SetupNewBlock() => CurrentBlock = new Block() { FirstActionInstructionPos = -1 };
 
         void FinishCurrentBlock()
         {
 			CurrentBlock.Instructions = CurrentSteps.ToArray();
+			CurrentSteps.Clear();
 			Result.Add(CurrentBlock);
 			SetupNewBlock();
         }
 
-		void MarkAsActionInstruction() => CurrentStep.IsActionInstruction = true;
+		void MarkAsActionInstruction()
+		{
+			CurrentStep.IsActionInstruction = true;
+			if (CurrentBlock.FirstActionInstructionPos == -1) 
+				CurrentBlock.FirstActionInstructionPos = CurrentSteps.Count;
+		}
 
 		EvalStackItem Pop()
         {
             if (!CurrentEvalStack.TryPop(out var item)) throw new InvalidPopException();
+			CurrentStep.Popped = item;
 
 			if (CurrentStep.IsActionInstruction) item.PoppedByActionStepsCounts++;
             return item;
@@ -102,7 +120,8 @@ namespace ILVisualizer.Application.Common.Services
                 popped[i] = item;
             }
 
-            return popped;
+			CurrentStep.Popped = popped;
+			return popped;
         }
 
         void PushOne(EvalStackItem item)

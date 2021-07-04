@@ -7,10 +7,12 @@ namespace ILVisualizer.Domain.Models.Processor
 {
     public struct Step
     {
-        public ILInstructionType Type;
+        public ILInstructionType InstructionType;
 
         /// <summary>
 		/// Whether this is an instruction that performs an action (has side effects beyond the eval stack).
+		/// For example "stloc.0" is an action instruction because it has an effect on something beyond the eval stack.
+		/// While "add" is not an action instruction because it does not effect anything beyond the eval stack.
 		/// </summary>
         public bool IsActionInstruction;
 
@@ -23,6 +25,9 @@ namespace ILVisualizer.Domain.Models.Processor
         {
             if (obj is Step step)
             {
+				if (IsActionInstruction != step.IsActionInstruction) return false;
+				if (InstructionType != step.InstructionType) return false;
+
 				if (Pushed == null)
 					return step.Pushed == null;
 				else
@@ -38,6 +43,10 @@ namespace ILVisualizer.Domain.Models.Processor
 
             return false;
         }
+
+		public Step(ILInstructionType type, EvalStackItem pushed, object popped, bool isActionInstruction) => 
+			(InstructionType, IsActionInstruction, Pushed, Popped) = 
+			(type, isActionInstruction, pushed, popped);
 
         // (Never used)
         public override int GetHashCode() => 0;
