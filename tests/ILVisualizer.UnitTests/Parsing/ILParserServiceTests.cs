@@ -19,10 +19,7 @@ namespace ILVisualizer.UnitTests.Parsing
 
             var expected = new ParsedILInstruction[] 
             { 
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_1
-                }
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_1)
             };
 
             Assert.True(expected.SequenceEqual(lst));
@@ -36,11 +33,7 @@ namespace ILVisualizer.UnitTests.Parsing
 
             var expected = new ParsedILInstruction[]
             {
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_S,
-                    Arg = 4
-                }
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_S, 4)
             };
 
             Assert.True(expected.SequenceEqual(lst));
@@ -68,11 +61,7 @@ namespace ILVisualizer.UnitTests.Parsing
 
             var expected = new ParsedILInstruction[]
             {
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4,
-                    Arg = 572
-                }
+                new ParsedILInstruction(ILInstructionType.Ldc_I4, 572)
             };
 
             Assert.True(expected.SequenceEqual(lst));
@@ -86,11 +75,7 @@ namespace ILVisualizer.UnitTests.Parsing
 
             var expected = new ParsedILInstruction[]
             {
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I8,
-                    Arg = 80000000000000
-                }
+                new ParsedILInstruction(ILInstructionType.Ldc_I8, 80000000000000)
             };
 
             Assert.True(expected.SequenceEqual(lst));
@@ -114,24 +99,10 @@ ldc.i4.m1");
 
             var expected = new ParsedILInstruction[]
             {
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_2
-                },
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_S,
-                    Arg = 7
-                },
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4,
-                    Arg = 567
-                },
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_M1
-                }
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_2),
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_S, 7),
+                new ParsedILInstruction(ILInstructionType.Ldc_I4, 567),
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_M1)
             };
 
             Assert.True(expected.SequenceEqual(lst));

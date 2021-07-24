@@ -22,11 +22,7 @@ namespace ILVisualizer.UnitTests.Processor
             var service = new ILProcessorService();
             var result = service.Process(new List<ParsedILInstruction>
             {
-                new ParsedILInstruction() 
-                {
-                    Type = ILInstructionType.Ldc_I4, 
-                    Arg = 13
-                }
+                new ParsedILInstruction(ILInstructionType.Ldc_I4, 13)
             });
 
             var expected = new Block[]
@@ -52,16 +48,10 @@ namespace ILVisualizer.UnitTests.Processor
             var result = service.Process(new List<ParsedILInstruction>
             {
                 // Push
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_2
-                },
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_2),
 
                 // Action Instruction - Pop
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ret
-                }
+                new ParsedILInstruction(ILInstructionType.Ret)
             });
 
 			var ldci42 = new Int32ConstantEvalStackItem(2)
@@ -85,7 +75,7 @@ namespace ILVisualizer.UnitTests.Processor
             CollectionAssert.Equal(expectedSteps, result);
         }
 
-        [Fact]
+		[Fact]
         public void Process_Folding_Int32WithInt32()
         {
             var service = new ILProcessorService();
@@ -93,20 +83,11 @@ namespace ILVisualizer.UnitTests.Processor
             var result = service.Process(new List<ParsedILInstruction>
             {
                 // Setup
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_2
-                },
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_5
-                },
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_2),
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_5),
 
                 // The instruction
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Add
-                }
+                new ParsedILInstruction(ILInstructionType.Add)
             });
 
 			var ldcI42 = new Int32ConstantEvalStackItem(2);
@@ -143,21 +124,11 @@ namespace ILVisualizer.UnitTests.Processor
             var result = service.Process(new List<ParsedILInstruction>
             {
                 // Setup
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I8,
-                    Arg = 80000000000000
-                },
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_5
-                },
+                new ParsedILInstruction(ILInstructionType.Ldc_I8, 80000000000000),
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_5),
 
                 // The instruction
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Add
-                }
+                new ParsedILInstruction(ILInstructionType.Add)
             });
 
 			var ldci8 = new Int64ConstantEvalStackItem(80000000000000);
@@ -194,21 +165,11 @@ namespace ILVisualizer.UnitTests.Processor
             var result = service.Process(new List<ParsedILInstruction>
             {
                 // Setup
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I4_7
-                },
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I8,
-                    Arg = 80000000000000
-                },
+                new ParsedILInstruction(ILInstructionType.Ldc_I4_7),
+                new ParsedILInstruction(ILInstructionType.Ldc_I8, 80000000000000),
 
                 // The instruction
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Add
-                }
+                new ParsedILInstruction(ILInstructionType.Add)
             });
 
 			var ldci47 = new Int32ConstantEvalStackItem(7);
@@ -239,22 +200,11 @@ namespace ILVisualizer.UnitTests.Processor
             var result = service.Process(new List<ParsedILInstruction>
             {
                 // Setup
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I8,
-                    Arg = 13
-                },
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Ldc_I8,
-                    Arg = 80000000000000
-                },
+                new ParsedILInstruction(ILInstructionType.Ldc_I8, 13),
+                new ParsedILInstruction(ILInstructionType.Ldc_I8, 80000000000000),
 
                 // The instruction
-                new ParsedILInstruction()
-                {
-                    Type = ILInstructionType.Add
-                }
+                new ParsedILInstruction(ILInstructionType.Add)
             });
 
 			var ldci8 = new Int64ConstantEvalStackItem(13);
@@ -283,10 +233,7 @@ namespace ILVisualizer.UnitTests.Processor
             var service = new ILProcessorService();
 			_ = Assert.Throws<InvalidPopException>(() => service.Process(new List<ParsedILInstruction>()
 			{
-				new ParsedILInstruction()
-				{
-					Type = ILInstructionType.Ret
-				}
+				new ParsedILInstruction(ILInstructionType.Ret)
 			}));
         }
     }

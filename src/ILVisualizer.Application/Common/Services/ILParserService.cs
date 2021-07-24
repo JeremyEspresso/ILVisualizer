@@ -35,11 +35,10 @@ namespace ILVisualizer.Application.Common.Services
 
         public ParsedILInstruction ParseInstruction()
         {
-            var res = new ParsedILInstruction();
-
             // Parse the opcode
             string opCodeStr = ReadToLineEndOrToChar(' ').ToLower();
-            res.Type = SelectInstruction(opCodeStr);
+         
+			var res = new ParsedILInstruction(SelectInstruction(opCodeStr));
 
             // Parse the operands (parameters)
             if (res.Type > ILInstructionType.Int64Parametered_Instructions)
