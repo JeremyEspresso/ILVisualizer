@@ -14,8 +14,18 @@
         Ldc_I4_7 = 7,
         Ldc_I4_8 = 8,
 
-        // Parameterless - Basic maths operators
-        Add = 32,
+		// Parameterless - Local/Argument loading
+		Ldloc_0 = 9,
+		Ldloc_1 = 10,
+		Ldloc_2 = 11,
+		Ldloc_3 = 12,
+		Ldarg_0 = 13,
+		Ldarg_1 = 14,
+		Ldarg_2 = 15,
+		Ldarg_3 = 16,
+
+		// Parameterless - Basic maths operators
+		Add = 32,
         Sub = 33,
         Mul = 34,
         Div = 35,
@@ -26,7 +36,9 @@
 
         // One single "Int8" parameter
         Int8Parametered_Instructions = 4096,
-        Ldc_I4_S = 4097,
+		Ldc_I4_S = 4097,
+		Ldloc_S = 4098,
+		Ldarg_S = 4099,
 
 		// One single "Int16" parameter
 		Int16Parametered_Instructions = 8192,

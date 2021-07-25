@@ -38,13 +38,25 @@ namespace ILVisualizer.UnitTests.Processor
 		public void PushInt64() =>
 			CheckPush(ILInstructionType.Ldc_I8, 80000000000000, new Int64ConstantEvalStackItem(80000000000000));
 
-		[Fact]
-		public void PushLoc() =>
-			CheckPush(ILInstructionType.Ldloc, 7, new LocalEvalStackItem(7));
+		[Theory]
+		[InlineData(ILInstructionType.Ldloc_0, 0, 0)]
+		[InlineData(ILInstructionType.Ldloc_1, 0, 1)]
+		[InlineData(ILInstructionType.Ldloc_2, 0, 2)]
+		[InlineData(ILInstructionType.Ldloc_3, 0, 3)]
+		[InlineData(ILInstructionType.Ldloc_S, 13, 13)]
+		[InlineData(ILInstructionType.Ldloc, 456, 456)]
+		public void PushLoc(ILInstructionType type, int arg, short index) =>
+			CheckPush(type, arg, new LocalEvalStackItem(index));
 
-		[Fact]
-		public void PushArg() =>
-			CheckPush(ILInstructionType.Ldarg, 13, new ArgEvalStackItem(13));
+		[Theory]
+		[InlineData(ILInstructionType.Ldarg_0, 0, 0)]
+		[InlineData(ILInstructionType.Ldarg_1, 0, 1)]
+		[InlineData(ILInstructionType.Ldarg_2, 0, 2)]
+		[InlineData(ILInstructionType.Ldarg_3, 0, 3)]
+		[InlineData(ILInstructionType.Ldarg_S, 13, 13)]
+		[InlineData(ILInstructionType.Ldarg, 456, 456)]
+		public void PushArg(ILInstructionType type, int arg, short index) =>
+			CheckPush(type, arg, new ArgEvalStackItem(index));
 
 		void CheckPush(ILInstructionType type, long arg, EvalStackItem item)
 		{

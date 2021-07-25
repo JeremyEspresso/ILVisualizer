@@ -70,9 +70,23 @@ namespace ILVisualizer.Application.Common.Services
                 case ILInstructionType.Ldc_I8:
                     PushOne(new Int64ConstantEvalStackItem(instruction.Arg));
                     break;
+				case ILInstructionType.Ldloc_0:
+				case ILInstructionType.Ldloc_1:
+				case ILInstructionType.Ldloc_2:
+				case ILInstructionType.Ldloc_3:
+					PushOne(new LocalEvalStackItem((short)(instruction.Type - ILInstructionType.Ldloc_0)));
+					break;
+				case ILInstructionType.Ldloc_S:
 				case ILInstructionType.Ldloc:
 					PushOne(new LocalEvalStackItem((short)instruction.Arg));
 					break;
+				case ILInstructionType.Ldarg_0:
+				case ILInstructionType.Ldarg_1:
+				case ILInstructionType.Ldarg_2:
+				case ILInstructionType.Ldarg_3:
+					PushOne(new ArgEvalStackItem((short)(instruction.Type - ILInstructionType.Ldarg_0)));
+					break;
+				case ILInstructionType.Ldarg_S:
 				case ILInstructionType.Ldarg:
 					PushOne(new ArgEvalStackItem((short)instruction.Arg));
 					break;
