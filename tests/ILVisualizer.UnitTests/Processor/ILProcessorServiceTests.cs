@@ -16,16 +16,6 @@ namespace ILVisualizer.UnitTests.Processor
 {
     public class ILProcessorServiceTests
     {
-		Block BlockFromSingleInstruction(Step step) => new Block()
-		{
-			FirstActionInstructionPos = -1,
-			Instructions = new Step[]
-				{
-					new Step(ILInstructionType.Ldc_I4, new Int32ConstantEvalStackItem(15), null, false)
-				}
-		};
-
-
 		[Theory]
 		[InlineData(ILInstructionType.Ldc_I4_M1, -1)]
 		[InlineData(ILInstructionType.Ldc_I4_0, 0)]
@@ -37,56 +27,32 @@ namespace ILVisualizer.UnitTests.Processor
 		[InlineData(ILInstructionType.Ldc_I4_6, 6)]
 		[InlineData(ILInstructionType.Ldc_I4_7, 7)]
 		[InlineData(ILInstructionType.Ldc_I4_8, 8)]
-		public void PushInt32_InInstruction(ILInstructionType type, int arg)
-        {
-            var service = new ILProcessorService();
-            var result = service.Process(new List<ParsedILInstruction>
-            {
-                new ParsedILInstruction(type, 0)
-            });
-
-            var expected = new Block[]
-            {
-				BlockFromSingleInstruction(new Step(type, new Int32ConstantEvalStackItem(arg), null, false))
-            };
-
-            CollectionAssert.Equal(expected, result);
-        }
+		public void PushInt32_InInstruction(ILInstructionType type, int arg) => 
+			CheckPush(type, 0, new Int32ConstantEvalStackItem(arg));
 
 		[Fact]
-		public void PushInt32()
+		public void PushInt32() =>
+			CheckPush(ILInstructionType.Ldc_I4, 15, new Int32ConstantEvalStackItem(15));
+
+		[Fact]
+		public void PushInt64() =>
+			CheckPush(ILInstructionType.Ldc_I8, 80000000000000, new Int64ConstantEvalStackItem(80000000000000));
+
+		void CheckPush(ILInstructionType type, long arg, EvalStackItem item)
 		{
 			var service = new ILProcessorService();
 			var result = service.Process(new List<ParsedILInstruction>
 			{
-				new ParsedILInstruction(ILInstructionType.Ldc_I4, 15)
+				new ParsedILInstruction(type, arg)
 			});
 
 			var expected = new Block[]
 			{
-				BlockFromSingleInstruction(new Step(ILInstructionType.Ldc_I4, new Int32ConstantEvalStackItem(15), null, false))
+				BlockFromSingleInstruction(new Step(type, item, null, false))
 			};
 
 			CollectionAssert.Equal(expected, result);
 		}
-
-		[Fact]
-		public void PushInt64()
-		{
-			var service = new ILProcessorService();
-			var result = service.Process(new List<ParsedILInstruction>
-			{
-				new ParsedILInstruction(ILInstructionType.Ldc_I4, 15)
-			});
-
-			var expected = new Block[]
-			{
-				BlockFromSingleInstruction(new Step(ILInstructionType.Ldc_I8, new Int64ConstantEvalStackItem(80000000000000), null, false))
-			};
-
-			CollectionAssert.Equal(expected, result);
-		}
-
 
 		[Fact]
         public void ActionInstruction()
@@ -218,5 +184,14 @@ namespace ILVisualizer.UnitTests.Processor
 				new ParsedILInstruction(ILInstructionType.Ret)
 			}));
         }
-    }
+
+		Block BlockFromSingleInstruction(Step step) => new()
+		{
+			FirstActionInstructionPos = -1,
+			Instructions = new Step[]
+			{
+				step
+			}
+		};
+	}
 }
