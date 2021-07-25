@@ -29,9 +29,9 @@
         Ldc_I4_S = 4097,
 
 		// One single "Int16" parameter
-		Int16Parametered_Instructions = 4096,
-		Ldloc = 4097,
-		Ldarg = 4098,
+		Int16Parametered_Instructions = 8192,
+		Ldloc = 8193,
+		Ldarg = 8194,
 
 		// One single "Int32" parameter
 		Int32Parametered_Instructions = 16384,

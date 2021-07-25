@@ -9,6 +9,6 @@
         public override bool Equals(object obj) =>
             obj is Int64ConstantEvalStackItem other && BaseEquals(other) && other.Value == Value;
 
-        public override int GetHashCode() => base.GetHashCode();        
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

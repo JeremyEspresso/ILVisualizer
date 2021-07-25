@@ -70,6 +70,12 @@ namespace ILVisualizer.Application.Common.Services
                 case ILInstructionType.Ldc_I8:
                     PushOne(new Int64ConstantEvalStackItem(instruction.Arg));
                     break;
+				case ILInstructionType.Ldloc:
+					PushOne(new LocalEvalStackItem((short)instruction.Arg));
+					break;
+				case ILInstructionType.Ldarg:
+					PushOne(new ArgEvalStackItem((short)instruction.Arg));
+					break;
 				case ILInstructionType.Add:
                 case ILInstructionType.Sub:
                 case ILInstructionType.Mul:

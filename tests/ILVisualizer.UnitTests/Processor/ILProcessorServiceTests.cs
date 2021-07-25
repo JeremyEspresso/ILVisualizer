@@ -38,6 +38,14 @@ namespace ILVisualizer.UnitTests.Processor
 		public void PushInt64() =>
 			CheckPush(ILInstructionType.Ldc_I8, 80000000000000, new Int64ConstantEvalStackItem(80000000000000));
 
+		[Fact]
+		public void PushLoc() =>
+			CheckPush(ILInstructionType.Ldloc, 7, new LocalEvalStackItem(7));
+
+		[Fact]
+		public void PushArg() =>
+			CheckPush(ILInstructionType.Ldarg, 13, new ArgEvalStackItem(13));
+
 		void CheckPush(ILInstructionType type, long arg, EvalStackItem item)
 		{
 			var service = new ILProcessorService();
