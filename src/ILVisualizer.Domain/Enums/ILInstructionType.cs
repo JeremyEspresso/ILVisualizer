@@ -25,11 +25,16 @@
         Ret = 64,
 
         // One single "Int8" parameter
-        Int8Parametered_Instructions = 8192,
-        Ldc_I4_S = 8193,
+        Int8Parametered_Instructions = 4096,
+        Ldc_I4_S = 4097,
 
-        // One single "Int32" parameter
-        Int32Parametered_Instructions = 16384,
+		// One single "Int16" parameter
+		Int16Parametered_Instructions = 4096,
+		Ldloc = 4097,
+		Ldarg = 4098,
+
+		// One single "Int32" parameter
+		Int32Parametered_Instructions = 16384,
         Ldc_I4 = 16385,
 
         // One single "Int64" parameter

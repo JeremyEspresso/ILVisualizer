@@ -72,6 +72,8 @@ namespace ILVisualizer.Application.Common.Services
 			"mul" => ILInstructionType.Mul,
 			"div" => ILInstructionType.Div,
 			"rem" => ILInstructionType.Rem,
+			"ldloc" => ILInstructionType.Ldloc,
+			"ldarg" => ILInstructionType.Ldarg,
 			_ => throw new ParseFailedException($"Unrecognized instruction: {opCodeStr}")
 		};
 
