@@ -83,9 +83,13 @@ namespace ILVisualizer.UnitTests.Processor
 
 		[Theory]
 		[InlineData(ConstantType.Int32, ConstantType.Int32, ILInstructionType.Add, 7)]
-		[InlineData(ConstantType.Int64, ConstantType.Int32, ILInstructionType.Add, 80000000000005)]
-		[InlineData(ConstantType.Int32, ConstantType.Int64, ILInstructionType.Add, 11L)]
+		[InlineData(ConstantType.Int64, ConstantType.Int32, ILInstructionType.Add, 80000000000002)]
+		[InlineData(ConstantType.Int32, ConstantType.Int64, ILInstructionType.Add, 14L)]
 		[InlineData(ConstantType.Int64, ConstantType.Int64, ILInstructionType.Add, 80000000000009)]
+		[InlineData(ConstantType.Int32, ConstantType.Int32, ILInstructionType.Sub, 3)]
+		[InlineData(ConstantType.Int64, ConstantType.Int32, ILInstructionType.Sub, 79999999999998)]
+		[InlineData(ConstantType.Int32, ConstantType.Int64, ILInstructionType.Sub, -4L)]
+		[InlineData(ConstantType.Int64, ConstantType.Int64, ILInstructionType.Sub, 79999999999991)]
 		public void Process_Operation_ConstantWithConstant(
 			ConstantType leftType, ConstantType rightType, ILInstructionType operation, object expectedResult)
         {
@@ -93,14 +97,14 @@ namespace ILVisualizer.UnitTests.Processor
 
 			(ParsedILInstruction leftInstruction, EvalStackItem leftStackItem) = leftType switch
 			{
-				ConstantType.Int32 => (new ParsedILInstruction(ILInstructionType.Ldc_I4_2), (EvalStackItem)new Int32ConstantEvalStackItem(2)),
+				ConstantType.Int32 => (new ParsedILInstruction(ILInstructionType.Ldc_I4_5), (EvalStackItem)new Int32ConstantEvalStackItem(5)),
 				ConstantType.Int64 => (new ParsedILInstruction(ILInstructionType.Ldc_I8, 80000000000000), new Int64ConstantEvalStackItem(80000000000000)),
 				_ => throw new Exception()
 			};
 
 			(ParsedILInstruction rightInstruction, EvalStackItem rightStackItem) = rightType switch
 			{
-				ConstantType.Int32 => (new ParsedILInstruction(ILInstructionType.Ldc_I4_5), (EvalStackItem)new Int32ConstantEvalStackItem(5)),
+				ConstantType.Int32 => (new ParsedILInstruction(ILInstructionType.Ldc_I4_2), (EvalStackItem)new Int32ConstantEvalStackItem(2)),
 				ConstantType.Int64 => (new ParsedILInstruction(ILInstructionType.Ldc_I8, 9), new Int64ConstantEvalStackItem(9)),
 				_ => throw new Exception()
 			};
