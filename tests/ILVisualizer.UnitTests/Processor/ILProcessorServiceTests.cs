@@ -27,7 +27,7 @@ namespace ILVisualizer.UnitTests.Processor
 		[InlineData(ILInstructionType.Ldc_I4_6, 6)]
 		[InlineData(ILInstructionType.Ldc_I4_7, 7)]
 		[InlineData(ILInstructionType.Ldc_I4_8, 8)]
-		public void Process_PushInt32_InInstruction(ILInstructionType type, int arg)
+		public void PushInt32_InInstruction(ILInstructionType type, int arg)
         {
             var service = new ILProcessorService();
             var result = service.Process(new List<ParsedILInstruction>
@@ -51,7 +51,7 @@ namespace ILVisualizer.UnitTests.Processor
         }
 
 		[Fact]
-		public void Process_PushInt32()
+		public void PushInt32()
 		{
 			var service = new ILProcessorService();
 			var result = service.Process(new List<ParsedILInstruction>
@@ -75,7 +75,7 @@ namespace ILVisualizer.UnitTests.Processor
 		}
 
         [Fact]
-        public void Process_ActionInstruction()
+        public void ActionInstruction()
         {
             var service = new ILProcessorService();
 
@@ -136,7 +136,7 @@ namespace ILVisualizer.UnitTests.Processor
 		[InlineData(ConstantType.Int64, ConstantType.Int32, ILInstructionType.Rem, 0L)]
 		[InlineData(ConstantType.Int32, ConstantType.Int64, ILInstructionType.Rem, 5L)]
 		[InlineData(ConstantType.Int64, ConstantType.Int64, ILInstructionType.Rem, 8L)]
-		public void Process_Operation_ConstantWithConstant(
+		public void Operation_ConstantWithConstant(
 			ConstantType leftType, ConstantType rightType, ILInstructionType operation, object expectedResult)
         {
             var service = new ILProcessorService();
@@ -196,7 +196,7 @@ namespace ILVisualizer.UnitTests.Processor
         }
 
 		[Fact]
-        public void Process_InvalidPop()
+        public void InvalidPop()
         {
             var service = new ILProcessorService();
 			_ = Assert.Throws<InvalidPopException>(() => service.Process(new List<ParsedILInstruction>()
