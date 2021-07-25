@@ -16,7 +16,17 @@ namespace ILVisualizer.UnitTests.Processor
 {
     public class ILProcessorServiceTests
     {
-        [Theory]
+		Block BlockFromSingleInstruction(Step step) => new Block()
+		{
+			FirstActionInstructionPos = -1,
+			Instructions = new Step[]
+				{
+					new Step(ILInstructionType.Ldc_I4, new Int32ConstantEvalStackItem(15), null, false)
+				}
+		};
+
+
+		[Theory]
 		[InlineData(ILInstructionType.Ldc_I4_M1, -1)]
 		[InlineData(ILInstructionType.Ldc_I4_0, 0)]
 		[InlineData(ILInstructionType.Ldc_I4_1, 1)]
@@ -37,14 +47,7 @@ namespace ILVisualizer.UnitTests.Processor
 
             var expected = new Block[]
             {
-				new Block()
-				{
-					FirstActionInstructionPos = -1,
-					Instructions = new Step[]
-					{
-						new Step(type, new Int32ConstantEvalStackItem(arg), null, false)						
-					}
-				}
+				BlockFromSingleInstruction(new Step(type, new Int32ConstantEvalStackItem(arg), null, false))
             };
 
             CollectionAssert.Equal(expected, result);
@@ -61,20 +64,31 @@ namespace ILVisualizer.UnitTests.Processor
 
 			var expected = new Block[]
 			{
-				new Block()
-				{
-					FirstActionInstructionPos = -1,
-					Instructions = new Step[]
-					{
-						new Step(ILInstructionType.Ldc_I4, new Int32ConstantEvalStackItem(15), null, false)
-					}
-				}
+				BlockFromSingleInstruction(new Step(ILInstructionType.Ldc_I4, new Int32ConstantEvalStackItem(15), null, false))
 			};
 
 			CollectionAssert.Equal(expected, result);
 		}
 
-        [Fact]
+		[Fact]
+		public void PushInt64()
+		{
+			var service = new ILProcessorService();
+			var result = service.Process(new List<ParsedILInstruction>
+			{
+				new ParsedILInstruction(ILInstructionType.Ldc_I4, 15)
+			});
+
+			var expected = new Block[]
+			{
+				BlockFromSingleInstruction(new Step(ILInstructionType.Ldc_I8, new Int64ConstantEvalStackItem(80000000000000), null, false))
+			};
+
+			CollectionAssert.Equal(expected, result);
+		}
+
+
+		[Fact]
         public void ActionInstruction()
         {
             var service = new ILProcessorService();
