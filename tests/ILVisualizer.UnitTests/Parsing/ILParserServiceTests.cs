@@ -39,7 +39,21 @@ namespace ILVisualizer.UnitTests.Parsing
             Assert.True(expected.SequenceEqual(lst));
         }
 
-        [Fact]
+		[Fact]
+		public void Parse_OneInstruction_Int16Argument()
+		{
+			var parser = new ILParserService();
+			var lst = parser.Parse("ldloc 6578");
+
+			var expected = new ParsedILInstruction[]
+			{
+				new ParsedILInstruction(ILInstructionType.Ldloc, 6578)
+			};
+
+			Assert.True(expected.SequenceEqual(lst));
+		}
+
+		[Fact]
         public void Parse_OneInstruction_Int8Argument_InvalidRange()
         {
             var parser = new ILParserService();
@@ -53,7 +67,21 @@ namespace ILVisualizer.UnitTests.Parsing
             Assert.Throws<ParseFailedException>(() => parser.Parse("ldc.i4.s 478a"));
         }
 
-        [Fact]
+		[Fact]
+		public void Parse_OneInstruction_Int16Argument_InvalidRange()
+		{
+			var parser = new ILParserService();
+			Assert.Throws<ParseFailedException>(() => parser.Parse("ldloc 70000"));
+		}
+
+		[Fact]
+		public void Parse_OneInstruction_Int16Argument_InvalidContents()
+		{
+			var parser = new ILParserService();
+			Assert.Throws<ParseFailedException>(() => parser.Parse("ldloc 478a"));
+		}
+
+		[Fact]
         public void Parse_OneInstruction_Int32Argument()
         {
             var parser = new ILParserService();

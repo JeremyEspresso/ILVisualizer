@@ -45,7 +45,9 @@ namespace ILVisualizer.Application.Common.Services
                 res.Arg = ReadInt64Parameter(true);
             else if (res.Type > ILInstructionType.Int32Parametered_Instructions)
                 res.Arg = ReadInt32Parameter(true);
-            else if (res.Type > ILInstructionType.Int8Parametered_Instructions)
+			else if (res.Type > ILInstructionType.Int16Parametered_Instructions)
+				res.Arg = ReadInt16Parameter(true);
+			else if (res.Type > ILInstructionType.Int8Parametered_Instructions)
                 res.Arg = ReadInt8Parameter(true);
 
             return res;
@@ -87,7 +89,17 @@ namespace ILVisualizer.Application.Common.Services
             return val;
         }
 
-        int ReadInt32Parameter(bool isLastParameter)
+		int ReadInt16Parameter(bool isLastParameter)
+		{
+			string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(Space);
+
+			if (!short.TryParse(parameterData, out short val))
+				throw new ParseFailedException($"Invalid Int32 number in parameter at position {_currentPos}");
+
+			return val;
+		}
+
+		int ReadInt32Parameter(bool isLastParameter)
         {
             string parameterData = isLastParameter ? ReadToLineEnd() : ReadToLineEndOrToChar(Space);
 
