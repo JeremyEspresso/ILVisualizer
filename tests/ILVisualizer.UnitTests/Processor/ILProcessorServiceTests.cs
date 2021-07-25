@@ -16,13 +16,23 @@ namespace ILVisualizer.UnitTests.Processor
 {
     public class ILProcessorServiceTests
     {
-        [Fact]
-        public void Process_SinglePush()
+        [Theory]
+		[InlineData(ILInstructionType.Ldc_I4_M1, -1)]
+		[InlineData(ILInstructionType.Ldc_I4_0, 0)]
+		[InlineData(ILInstructionType.Ldc_I4_1, 1)]
+		[InlineData(ILInstructionType.Ldc_I4_2, 2)]
+		[InlineData(ILInstructionType.Ldc_I4_3, 3)]
+		[InlineData(ILInstructionType.Ldc_I4_4, 4)]
+		[InlineData(ILInstructionType.Ldc_I4_5, 5)]
+		[InlineData(ILInstructionType.Ldc_I4_6, 6)]
+		[InlineData(ILInstructionType.Ldc_I4_7, 7)]
+		[InlineData(ILInstructionType.Ldc_I4_8, 8)]
+		public void Process_PushInt32_InInstruction(ILInstructionType type, int arg)
         {
             var service = new ILProcessorService();
             var result = service.Process(new List<ParsedILInstruction>
             {
-                new ParsedILInstruction(ILInstructionType.Ldc_I4, 13)
+                new ParsedILInstruction(type, 0)
             });
 
             var expected = new Block[]
@@ -32,13 +42,37 @@ namespace ILVisualizer.UnitTests.Processor
 					FirstActionInstructionPos = -1,
 					Instructions = new Step[]
 					{
-						new Step(ILInstructionType.Ldc_I4, new Int32ConstantEvalStackItem(13), null, false)						
+						new Step(type, new Int32ConstantEvalStackItem(arg), null, false)						
 					}
 				}
             };
 
             CollectionAssert.Equal(expected, result);
         }
+
+		[Fact]
+		public void Process_PushInt32()
+		{
+			var service = new ILProcessorService();
+			var result = service.Process(new List<ParsedILInstruction>
+			{
+				new ParsedILInstruction(ILInstructionType.Ldc_I4, 15)
+			});
+
+			var expected = new Block[]
+			{
+				new Block()
+				{
+					FirstActionInstructionPos = -1,
+					Instructions = new Step[]
+					{
+						new Step(ILInstructionType.Ldc_I4, new Int32ConstantEvalStackItem(15), null, false)
+					}
+				}
+			};
+
+			CollectionAssert.Equal(expected, result);
+		}
 
         [Fact]
         public void Process_ActionInstruction()
@@ -161,7 +195,7 @@ namespace ILVisualizer.UnitTests.Processor
             CollectionAssert.Equal(expectedSteps, result);
         }
 
-        [Fact]
+		[Fact]
         public void Process_InvalidPop()
         {
             var service = new ILProcessorService();
