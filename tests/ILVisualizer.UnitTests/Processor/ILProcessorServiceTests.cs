@@ -94,6 +94,10 @@ namespace ILVisualizer.UnitTests.Processor
 		[InlineData(ConstantType.Int64, ConstantType.Int32, ILInstructionType.Mul, 160000000000000)]
 		[InlineData(ConstantType.Int32, ConstantType.Int64, ILInstructionType.Mul, 45L)]
 		[InlineData(ConstantType.Int64, ConstantType.Int64, ILInstructionType.Mul, 720000000000000)]
+		[InlineData(ConstantType.Int32, ConstantType.Int32, ILInstructionType.Div, 2)]
+		[InlineData(ConstantType.Int64, ConstantType.Int32, ILInstructionType.Div, 40000000000000)]
+		[InlineData(ConstantType.Int32, ConstantType.Int64, ILInstructionType.Div, 0L)]
+		[InlineData(ConstantType.Int64, ConstantType.Int64, ILInstructionType.Div, 8888888888888)]
 		public void Process_Operation_ConstantWithConstant(
 			ConstantType leftType, ConstantType rightType, ILInstructionType operation, object expectedResult)
         {
