@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  ilvisualizer.bot:
+    image: ${DOCKER_REGISTRY-}ilvisualizerbot
+    restart: always
+    env_file:
+        - ../../.env
+    build:
+      context: ../../
+      dockerfile: src/ILVisualizer.Bot/Dockerfile

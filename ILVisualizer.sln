@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILVisualizer.Bot", "src\ILVisualizer.Bot\ILVisualizer.Bot.csproj", "{14A24A98-C395-42C0-9F76-2F3970857415}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILVisualizer.Application", "src\ILVisualizer.Application\ILVisualizer.Application.csproj", "{63F55AF7-43F4-4B0F-8138-C01ECB11C01A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILVisualizer.Domain", "src\ILVisualizer.Domain\ILVisualizer.Domain.csproj", "{C81D0F4F-0EAC-42CA-BE31-CA3DD604F61C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8C7E59D8-4056-429B-919A-0C3F5FD9D821}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILVisualizer.UnitTests", "tests\ILVisualizer.UnitTests\ILVisualizer.UnitTests.csproj", "{EDD36AB1-9346-47DB-99B4-08EE917B951C}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "src\ILVisualizer.Docker\docker-compose.dcproj", "{4068C745-0325-4E8D-8CB2-357B6413DEA9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E0203156-FA17-4A71-BDEF-63A01BC09593}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14A24A98-C395-42C0-9F76-2F3970857415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14A24A98-C395-42C0-9F76-2F3970857415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14A24A98-C395-42C0-9F76-2F3970857415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14A24A98-C395-42C0-9F76-2F3970857415}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63F55AF7-43F4-4B0F-8138-C01ECB11C01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63F55AF7-43F4-4B0F-8138-C01ECB11C01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63F55AF7-43F4-4B0F-8138-C01ECB11C01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63F55AF7-43F4-4B0F-8138-C01ECB11C01A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C81D0F4F-0EAC-42CA-BE31-CA3DD604F61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C81D0F4F-0EAC-42CA-BE31-CA3DD604F61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C81D0F4F-0EAC-42CA-BE31-CA3DD604F61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C81D0F4F-0EAC-42CA-BE31-CA3DD604F61C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD36AB1-9346-47DB-99B4-08EE917B951C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD36AB1-9346-47DB-99B4-08EE917B951C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD36AB1-9346-47DB-99B4-08EE917B951C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD36AB1-9346-47DB-99B4-08EE917B951C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4068C745-0325-4E8D-8CB2-357B6413DEA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4068C745-0325-4E8D-8CB2-357B6413DEA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4068C745-0325-4E8D-8CB2-357B6413DEA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4068C745-0325-4E8D-8CB2-357B6413DEA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EDD36AB1-9346-47DB-99B4-08EE917B951C} = {8C7E59D8-4056-429B-919A-0C3F5FD9D821}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6CAAA8DD-37F5-4A3D-BAA0-E62DED7841E1}
+	EndGlobalSection
+EndGlobal
