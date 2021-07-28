@@ -70,7 +70,7 @@ namespace ILVisualizer.Application.Common.Services
                 case ILInstructionType.Ldc_I8:
                     PushOne(new Int64ConstantEvalStackItem(instruction.Arg));
                     break;
-                case ILInstructionType.Add:
+				case ILInstructionType.Add:
                 case ILInstructionType.Sub:
                 case ILInstructionType.Mul:
                 case ILInstructionType.Div:
@@ -118,7 +118,7 @@ namespace ILVisualizer.Application.Common.Services
 
             // Try to do any constant folding if both the first and second are constants.
             // (e.g. 3 + 4 can become 7)
-            var mode = GetFoldMode();
+            var mode = (FoldMode)Math.Max((int)GetFoldMode(first), (int)GetFoldMode(second));
 
 			EvalStackItem toPush = mode switch
 			{
@@ -129,22 +129,11 @@ namespace ILVisualizer.Application.Common.Services
 
 			PushOne(toPush);
 
-            FoldMode GetFoldMode()
+            FoldMode GetFoldMode(EvalStackItem itm)
             {
-                if (first is Int32ConstantEvalStackItem)
-                {
-                    if (second is Int32ConstantEvalStackItem)
-                        return FoldMode.Int32;
-                    else if (second is Int64ConstantEvalStackItem)
-                        return FoldMode.Int64;
-                }
-                else if (first is Int64ConstantEvalStackItem)
-                {
-                    if (second is Int32ConstantEvalStackItem or Int64ConstantEvalStackItem)
-                        return FoldMode.Int64;
-                }
-
-                return FoldMode.None;
+				if (itm is Int32ConstantEvalStackItem) return FoldMode.Int32;
+				else if (itm is Int64ConstantEvalStackItem) return FoldMode.Int64;
+				else return FoldMode.None;
             }
 
             Int32ConstantEvalStackItem Fold32(int a, int b)

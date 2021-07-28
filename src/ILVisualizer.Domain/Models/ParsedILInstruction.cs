@@ -6,5 +6,11 @@ namespace ILVisualizer.Domain.Models
     {
         public ILInstructionType Type;
         public long Arg;
-    }
+
+		public ParsedILInstruction(ILInstructionType type, long arg = 0)
+		{
+			Type = type;
+			Arg = arg;
+		}
+	}
 }
